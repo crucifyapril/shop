@@ -1,0 +1,20 @@
+before_script:
+  - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - phpcs
+
+variables:
+  IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+
+phpcs:
+  stage: phpcs
+  script:
+    - apk add --no-cache make
+    - make phpcs
+  allow_failure: false

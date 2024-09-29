@@ -49,3 +49,6 @@ npm-dev:
 # Пример: make npm-run cmd='npm install -D tailwindcss'
 npm-run:
 	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 $(cmd)
+
+phpcs:
+	@docker run --rm -v .:/tools/app ghcr.io/aleksandrtm/php-tools phpcs
