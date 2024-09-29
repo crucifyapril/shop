@@ -1,0 +1,36 @@
+services:
+  nginx-shop:
+    container_name: nginx-shop
+    image: nginx:1.24
+    restart: no
+    volumes:
+      - .:/var/www/
+      - ./.docker/config/nginx/:/etc/nginx/conf.d/
+      - ./.docker/logs/nginx:/var/log/nginx/
+    ports:
+      - "80:80"
+    networks:
+      - web-network-shop
+
+  php-shop:
+    build:
+      context: ./.docker/
+    container_name: php-shop
+    restart: no
+    working_dir: /var/www
+    volumes:
+      - .:/var/www/
+    networks:
+      - web-network-shop
+
+  redis-shop:
+    container_name: redis-shop
+    image: redis:7.4.0-alpine
+    restart: no
+    networks:
+      - web-network-shop
+
+networks:
+  web-network-shop:
+    name: web-network-shop
+    driver: bridge
