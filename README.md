@@ -4,8 +4,10 @@
 
 
 #### Сборка и запуск проекта:
-- Сборка `make build vendor`  
+- Сборка проекта `make build vendor npm-install`  
+- Сборка frontend'a `make npm-build`
 - Запуск `make up`
+- Отслеживать изменения frontend'a `make npm-dev`
 - Перейти на [localhost](http://localhost)
 
 #### Окружение:

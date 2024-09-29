@@ -31,10 +31,17 @@ key-generate:
 env:
 	@cp .env.example .env
 
-clean: clean-logs clean-cache clean-vendor
+clean: clean-logs optimize clean-vendor
 clean-logs:
 	@sudo rm -fr ./.docker/logs/nginx/*
-clean-cache:
+optimize:
 	@docker compose exec php-la2craft bash -c "php artisan optimize:clear"
 clean-vendor:
 	@sudo rm -fr ./vendor
+
+npm-install:
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm i
+npm-build:
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm run build
+npm-dev:
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 -p 5173:5173 node:20.17 npm run dev
