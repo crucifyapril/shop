@@ -35,9 +35,9 @@ clean: clean-logs optimize clean-vendor
 clean-logs:
 	@sudo rm -fr ./.docker/logs/nginx/*
 optimize:
-	@docker compose exec php-la2craft bash -c "php artisan optimize:clear"
+	@docker compose exec php-shop bash -c "php artisan optimize:clear"
 clean-vendor:
-	@sudo rm -fr ./vendor
+	@rm -fr ./vendor && rm -fr ./node_modules
 
 npm-install:
 	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm i

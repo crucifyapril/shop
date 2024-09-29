@@ -12,7 +12,8 @@
 
 #### Окружение:
 - Laravel 11
-- PHP 8.3.11
+- PHP 8.3
+- Tailwind
 - MySQL
 - Nginx
 - Redis
