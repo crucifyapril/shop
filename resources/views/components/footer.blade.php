@@ -1,0 +1,1 @@
+<p class="text-gray-400">&copy; 2024 Your Company. All rights reserved.</p>

@@ -45,3 +45,7 @@ npm-build:
 	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm run build
 npm-dev:
 	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 -p 5173:5173 node:20.17 npm run dev
+
+# Пример: make npm-run cmd='npm install -D tailwindcss'
+npm-run:
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 $(cmd)
