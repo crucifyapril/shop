@@ -2,7 +2,7 @@ IMAGE = shop-learn
 VERSION = 1.0
 WORK_DIR = /var/www
 
-.PHONY: vendor logs tests
+.PHONY: vendor logs tests artisan
 
 build:
 	@docker build -t $(IMAGE):$(VERSION) ./.docker/
@@ -30,6 +30,10 @@ key-generate:
 	@docker compose exec php-shop bash -c "php artisan key:generate"
 env:
 	@cp .env.example .env
+
+# Пример: make artisan c='php artisan tinker'
+artisan:
+	@docker run -it --rm -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) $(c)
 
 clean: clean-logs optimize clean-vendor
 clean-logs:
