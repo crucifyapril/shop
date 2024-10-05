@@ -7,7 +7,7 @@
     <arg value="n"/>
     <arg value="s"/>
     <arg name="extensions" value="php"/>
-    <arg name="ignore" value="vendor"/>
+    <arg name="ignore" value="vendor,storage"/>
     <config name="ignore_warnings_on_exit" value="1"/>
     <rule ref="PSR12">
     </rule>
