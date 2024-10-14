@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\YourController;
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/your-route', [YourController::class, 'yourMethod']);
