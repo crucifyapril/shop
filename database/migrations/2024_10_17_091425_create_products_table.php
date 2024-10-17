@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('price')->comment('Цена');
             $table->text('description')->nullable()->comment('Описание');
             $table->integer('quantity')->default(0)->comment('Количество');
-            $table->boolean('available_for_sale')->nullable(false)->comment('Доступен ли к продаже');
+            $table->boolean('is_available')->nullable(false)->comment('Доступен ли к продаже');
         });
     }
 
