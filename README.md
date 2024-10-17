@@ -4,7 +4,7 @@
 
 
 #### Сборка и запуск проекта:
-- Сборка проекта `make build vendor npm-install`  
+- Сборка проекта `make env key-generate build vendor npm-install`  
 - Сборка frontend'a `make npm-build`
 - Запуск `make up`
 - Отслеживать изменения frontend'a `make npm-dev`

@@ -25,9 +25,9 @@ redis-bash:
 redis-logs:
 	@docker compose logs redis-shop
 vendor:
-	docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) composer install
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) composer install
 key-generate:
-	@docker compose exec php-shop bash -c "php artisan key:generate"
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan key:generate
 env:
 	@cp .env.example .env
 
