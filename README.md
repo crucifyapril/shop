@@ -7,7 +7,7 @@
 - Сборка проекта `make env key-generate build vendor npm-install`  
 - Сборка frontend'a `make npm-build`
 - Запуск `make up`
-- Отслеживать изменения frontend'a `make npm-dev`
+- Отслеживать изменения frontend'a (css|html|js) `make npm-dev`
 - Перейти на [localhost](http://localhost)
 
 #### Окружение:
