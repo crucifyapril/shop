@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id()->primary()->autoIncrement(); // Уникальный идентификатор
-            $table->decimal('amount', 9, 2); // Сумма
-            $table->string('status'); // Статус
-            $table->text('description')->nullable(); // Описание
-            $table->timestamps(); // Дата создания и дата последнего изменения
+            $table->id()->primary()->autoIncrement()->comment('Уникальный идентификатор');
+            $table->integer('price')->comment('Стоимость');
+            $table->string('status')->comment('Статус');
+            $table->text('description')->nullable()->comment('Описание');
+            $table->timestamps();
         });
     }
 
