@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id(); // Уникальный идентификатор
+            $table->id()->primary()->autoIncrement(); // Уникальный идентификатор
             $table->decimal('amount', 9, 2); // Сумма
             $table->string('status'); // Статус
             $table->text('description')->nullable(); // Описание
