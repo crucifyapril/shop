@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id()->primary()->autoIncrement()->comment('Уникальный идентификатор');
-            $table->integer('price')->comment('Стоимость');
+            $table->integer('total_amount')->comment('Общая сумма заказов');
             $table->string('status')->comment('Статус');
             $table->text('description')->nullable()->comment('Описание');
             $table->timestamps();
