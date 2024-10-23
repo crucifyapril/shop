@@ -1,5 +1,5 @@
 <?php
 
-use App\Http\Controllers\YourController;
+use App\Http\Controllers\MainController;
 
-Route::get('/your-route', [YourController::class, 'yourMethod']);
+Route::get('/route', [MainController::class, 'method']);
