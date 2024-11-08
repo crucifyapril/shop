@@ -30,22 +30,26 @@ services:
     networks:
       - web-network-shop
 
-
-  db:
-    container_name: db
+  db-shop:
+    container_name: db-shop
     image: mysql:8.4.3
     restart: no
     ports:
       - "3317:3306"
     environment:
       MYSQL_ROOT_PASSWORD: local
+      MYSQL_DATABASE: shop
+      MYSQL_USER: shop
+      MYSQL_PASSWORD: shop
     security_opt:
       - seccomp:unconfined
     volumes:
-      - database-data:/etc/mysql/conf.d/
+      - database-shop:/etc/mysql/conf.d/
+    networks:
+        - web-network-shop
 
 volumes:
-    database-data:
+    database-shop:
 
 networks:
   web-network-shop:
