@@ -9,10 +9,12 @@
     <ul>
         @foreach($products as $product)
             <li>
-                <a>{{ $product->name }}</a> - {{ $product->price }} руб.
+                {{ $product->name }} - {{ $product->price }} руб.
             </li>
         @endforeach
     </ul>
+
+    {{ $products->links() }}
 @endsection
 
 @section('footer')
