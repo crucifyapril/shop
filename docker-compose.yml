@@ -44,12 +44,13 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - database-shop:/etc/mysql/conf.d/
+      - database-shop-v1:/etc/mysql/conf.d/
     networks:
-        - web-network-shop
+      - web-network-shop
 
 volumes:
-    database-shop:
+    database-shop-v1:
+        name: database-shop-v1
 
 networks:
   web-network-shop:
