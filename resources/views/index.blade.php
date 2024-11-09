@@ -5,9 +5,10 @@
 @endsection
 
 @section('content')
-    <h1 class="text-3xl font-bold">Добро пожаловать</h1>
+    <h1 class="text-3xl font-bold">Топ 5 товаров</h1>
 
-    <p class="mt-4">Тут будет контент</p>
+    @include('components.product')
+
 @endsection
 
 @section('footer')
