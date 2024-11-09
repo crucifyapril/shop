@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $products = Product::paginate(20);
+        $products = Product::query()->paginate(15);
 
         return view('products.index', compact('products'));
     }

@@ -6,7 +6,7 @@
     <title>Dark Theme Layout</title>
     @vite('resources/css/app.css')
 </head>
-<body class="flex flex-col min-h-screen bg-gray-900 text-gray-100">
+<body class="flex flex-col min-h-screen bg-gray-900 text-gray-100 w-full">
 
 <header>
     @yield('header')
