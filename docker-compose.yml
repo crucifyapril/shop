@@ -44,7 +44,7 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - database-shop-v1:/etc/mysql/conf.d/
+      - database-shop-v1:/var/lib/mysql
     networks:
       - web-network-shop
 
