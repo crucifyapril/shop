@@ -19,9 +19,4 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
-    public function isBuyer(): bool
-    {
-        return $this->role === 'buyer';
-    }
 }

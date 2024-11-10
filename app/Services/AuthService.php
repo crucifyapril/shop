@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\DTOs\CreateUserDTO;
-use App\DTOs\LoginUserDTO;
+use App\DTOs\RegisterFormDTO;
+use App\DTOs\LoginFormDTO;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class AuthService
+final class AuthService
 {
-    public function createUser(CreateUserDTO $dto): User
+    public function createUser(RegisterFormDTO $dto): User
     {
         return User::query()->create([
             'name' => $dto->name,
@@ -24,7 +24,7 @@ class AuthService
     /**
      * @throws ValidationException
      */
-    public function login(LoginUserDTO $dto): true
+    public function login(LoginFormDTO $dto): true
     {
         if (!Auth::attempt(['email' => $dto->email, 'password' => $dto->password])) {
             throw ValidationException::withMessages([

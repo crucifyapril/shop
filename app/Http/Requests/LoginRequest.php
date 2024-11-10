@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\CreateUserDTO;
-use App\DTOs\LoginUserDTO;
+use App\DTOs\RegisterFormDTO;
+use App\DTOs\LoginFormDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -31,9 +31,9 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): LoginUserDTO
+    public function toDTO(): LoginFormDTO
     {
-        return new LoginUserDTO(
+        return new LoginFormDTO(
             $this->input('email'),
             $this->input('password')
         );

@@ -13,12 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController
 {
-    protected AuthService $authService;
-
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
+    public function __construct(protected AuthService $authService,) {}
 
     public function viewFormLogin(): View
     {
@@ -48,7 +43,7 @@ class AuthController
         return redirect()->route('viewFormLogin')->with('success', 'Регистрация прошла успешно! Пожалуйста, войдите.');
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request, AuthService $authService): RedirectResponse
     {
         $this->authService->logout($request);
 

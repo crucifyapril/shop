@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-readonly class CreateUserDTO
+readonly class RegisterFormDTO
 {
     public function __construct(
         public string $name,
