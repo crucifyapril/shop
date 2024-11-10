@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 
 class MainController
 {
-    public function index(): View
+    public function index(ProductService $productService): View
     {
-        $products = Product::query()->inRandomOrder()->limit(5)->get();
+        $products = $productService->getRandomProduct(5);
 
         return view('index', compact('products'));
     }

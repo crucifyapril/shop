@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Contracts\View\View;
+use Illuminate\View\View;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
-    public function index(): View
+    public function index(ProductService $productService): View
     {
-        $products = Product::query()->paginate(15);
+        $products = $productService->getProductPaginated(15);
 
         return view('products.index', compact('products'));
     }
