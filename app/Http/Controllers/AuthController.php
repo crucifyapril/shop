@@ -13,9 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController
 {
-    public function __construct(protected AuthService $authService,)
-    {
-    }
+    protected AuthService $authService;
 
     public function viewFormLogin(): View
     {
