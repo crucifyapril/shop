@@ -4,7 +4,8 @@ namespace App\Services;
 
 use App\DTOs\RegisterFormDTO;
 use App\DTOs\LoginFormDTO;
-use App\Http\Requests\LoginRequest;
+use App\Enum\Roles;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,13 @@ final class AuthService
 {
     public function createUser(RegisterFormDTO $dto): User
     {
+        $role = Role::query()->where('name', Roles::BUYER)->first();
+
         return User::query()->create([
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => $dto->password,
+            'role_id' => $role->id,
         ]);
     }
 
@@ -40,7 +44,6 @@ final class AuthService
         Auth::logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
     }
 }
