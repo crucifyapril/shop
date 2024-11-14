@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function create(Request $request): View
     {
 
-        return view('Orders.order-form', ['product_id' => $request->input('product_id')]);
+        return view('orders.order-form', ['product_id' => $request->input('product_id')]);
     }
 
     public function submit(OrderService $orderService, OrderRequest $request): RedirectResponse
