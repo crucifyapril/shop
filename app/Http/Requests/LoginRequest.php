@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\RegisterFormDTO;
 use App\DTOs\LoginFormDTO;
 use Illuminate\Foundation\Http\FormRequest;
 

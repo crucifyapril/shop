@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\DTOs\OrderFormDTO;
-use App\DTOs\RegisterFormDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderRequest extends FormRequest
