@@ -31,5 +31,4 @@ class OrderRequest extends FormRequest
             $this->input('product_id'),
         );
     }
-
 }

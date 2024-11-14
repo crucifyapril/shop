@@ -11,7 +11,6 @@ class OrderService
 {
     public function createOrder(OrderFormDTO $dto): Order
     {
-
         return Order::query()->create([
             'total_amount' => 1,
             'status' => 'pending',
