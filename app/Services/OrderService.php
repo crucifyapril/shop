@@ -29,13 +29,8 @@ class OrderService
         ]);
     }
 
-    public function showOrders(): Collection
-    {
-        return Order::query()->where('id', Auth::id())->with('product')->get();
-    }
-
     public function getOrdersPaginated(int $count): LengthAwarePaginator
     {
-        return Order::query()->paginate($count);
+        return Order::query()->where('user_id', Auth::user()->id)->paginate($count);
     }
 }

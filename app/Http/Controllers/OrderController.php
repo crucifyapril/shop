@@ -12,10 +12,9 @@ class OrderController extends Controller
 {
     public function orders(OrderService $orderService): View
     {
-        $orders = $orderService->showOrders();
-        $paginate = $orderService->getOrdersPaginated(10);
+        $orders = $orderService->getOrdersPaginated(30);
 
-        return view('orders.my-orders', compact('orders', 'paginate'));
+        return view('orders.my-orders', compact('orders'));
     }
 
     public function create(ProductIdRequest $request): View
