@@ -23,4 +23,9 @@ class ProductService
             ->where('is_available', $isAvailable)
             ->get();
     }
+
+    public function getProductById(int $id): ?Product
+    {
+        return Product::query()->find($id);
+    }
 }
