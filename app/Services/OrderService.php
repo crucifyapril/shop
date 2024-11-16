@@ -31,6 +31,6 @@ class OrderService
 
     public function getOrdersPaginated(int $count): LengthAwarePaginator
     {
-        return Order::query()->where('user_id', Auth::user()->id)->paginate($count);
+        return Order::query()->where('user_id', auth()->id())->paginate($count);
     }
 }
