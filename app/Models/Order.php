@@ -15,7 +15,6 @@ class Order extends Model
         'status',
         'product_id',
         'user_id',
-        'phone',
         'description',
     ];
 
