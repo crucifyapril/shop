@@ -7,10 +7,17 @@ use App\Http\Requests\ProductIdRequest;
 use App\Services\OrderService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function orders(OrderService $orderService): View
+    {
+        $orders = $orderService->showOrders();
+        $paginate = $orderService->getOrdersPaginated(10);
+
+        return view('orders.my-orders', compact('orders', 'paginate'));
+    }
+
     public function create(ProductIdRequest $request): View
     {
         return view('orders.order-form', ['product_id' => $request->input('product_id')]);
@@ -20,6 +27,6 @@ class OrderController extends Controller
     {
         $orderService->createOrder($request->toDTO());
 
-        return redirect()->route('index');
+        return redirect()->route('orders');
     }
 }

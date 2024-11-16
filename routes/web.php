@@ -17,5 +17,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
+Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 Route::get('/order/form', [OrderController::class, 'create'])->name('order.create');
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
