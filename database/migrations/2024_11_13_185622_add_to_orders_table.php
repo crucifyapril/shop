@@ -9,9 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('name')->after('status')->comment('Имя покупателя');
-            $table->string('phone')->after('name')->comment('Телефон покупателя');
-            $table->text('comment')->nullable()->after('phone')->comment('Комментарий покупателя');
+            $table->foreignId('user_id')->after('status')->nullable()->constrained('users');
             $table->foreignId('product_id')->after('status')->nullable(false)->constrained('products');
         });
     }
@@ -19,7 +17,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn(['name', 'phone', 'comment', 'product_id']);
+            $table->dropColumn(['user_id', 'product_id']);
         });
     }
 };

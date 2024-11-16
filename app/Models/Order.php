@@ -14,14 +14,18 @@ class Order extends Model
         'total_amount',
         'status',
         'product_id',
-        'name',
+        'user_id',
         'phone',
-        'comment',
         'description',
     ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

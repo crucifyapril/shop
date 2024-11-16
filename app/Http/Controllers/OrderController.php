@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\ProductIdRequest;
 use App\Services\OrderService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -10,9 +11,8 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function create(Request $request): View
+    public function create(ProductIdRequest $request): View
     {
-
         return view('orders.order-form', ['product_id' => $request->input('product_id')]);
     }
 

@@ -2,23 +2,27 @@
 
 namespace App\Services;
 
-use App\DTOs\OrderFormDTO;
+use App\Models\User;
 use App\Models\Order;
+use App\DTOs\OrderFormDTO;
 
 class OrderService
 {
-    public function createOrder(OrderFormDTO $dto): Order
+    public function createOrder(OrderFormDTO $orderDTO): Order
     {
+        $user = User::query()->where('email', $orderDTO->email)->get('id')->first();
+
+        if (!is_null($user)) {
+            $userId = $user->id;
+        }
+
         return Order::query()->create([
             'total_amount' => 1,
             'status' => 'pending',
-            'name' => $dto->name,
-            'phone' => $dto->phone,
-            'comment' => $dto->comment,
-            'product_id' => $dto->product_id,
-            'description' => 'Описание заказа',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'user_id' => $userId ?? null,
+            'phone' => $orderDTO->phone,
+            'description' => $orderDTO->description,
+            'product_id' => $orderDTO->product_id,
         ]);
     }
 }

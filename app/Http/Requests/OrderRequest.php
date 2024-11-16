@@ -15,9 +15,11 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'comment' => 'nullable|string|max:500',
+            'name' => 'required|string',
+            'email' => 'required|string|email',
+            'phone' => 'required|string',
+            'description' => 'nullable|string',
+            'product_id' => 'required|exists:products,id',
         ];
     }
 
@@ -25,8 +27,9 @@ class OrderRequest extends FormRequest
     {
         return new OrderFormDTO(
             $this->input('name'),
+            $this->input('email'),
             $this->input('phone'),
-            $this->input('comment'),
+            $this->input('description'),
             $this->input('product_id'),
         );
     }
