@@ -33,4 +33,9 @@ class OrderService
     {
         return Order::query()->where('user_id', auth()->id())->paginate($count);
     }
+
+    public function showOrder(int $id): Order
+    {
+        return Order::query()->where('user_id', auth()->id())->find($id);
+    }
 }
