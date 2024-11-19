@@ -22,4 +22,3 @@ Route::get('/orders', [OrderController::class, 'orders'])->middleware('auth')->n
 Route::get('/order/form', [OrderController::class, 'create'])->name('order.create');
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
-

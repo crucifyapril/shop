@@ -12,11 +12,11 @@
         <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
 
             <h2 class="font-manrope font-bold text-3xl sm:text-4xl leading-10 text-black mb-11">
-                Your Order Confirmed
+                Заказ оформлен
             </h2>
-            <h6 class="font-medium text-xl leading-8 text-black mb-3">Hello, {{ auth()->user()->name }}</h6>
-            <p class="font-normal text-lg leading-8 text-gray-500 mb-11">Your order has been completed and be
-                delivery in only two days .</p>
+            <h6 class="font-medium text-xl leading-8 text-black mb-3">Привет, {{ auth()->user()->name }}</h6>
+            <p class="font-normal text-lg leading-8 text-gray-500 mb-11">Ваш заказ выполнен и будет
+                доставлен 20 февраля.</p>
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 py-6 border-y border-gray-100 mb-6">
                 <div class="box group">
@@ -38,52 +38,81 @@
                     </svg>
                 </div>
                 <div class="box group">
-                    <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Address</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">718 Robbyn Meadow, S...
+                    <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Заказчик</p>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ auth()->user()->name }}</h6>
+                </div>
+                <div class="box group">
+                    <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Почта</p>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ auth()->user()->email }}</h6>
+                </div>
+                <div class="box group">
+                    <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Комментарий к заказу</p>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black"> {{ $order->description ?? 'Нет комментария' }}
                     </h6>
                 </div>
             </div>
-
-            <div class="grid grid-cols-7 w-full pb-6 border-b border-gray-100">
-                <div class="col-span-7 min-[500px]:col-span-2 md:col-span-1">
-                    <img src="{{ asset('images/no-image.jpg') }}" alt="Skin Care Kit image" class="w-1/4 rounded-xl object-cover">
-                </div>
-                <div
-                    class="col-span-7 min-[200px]:col-span-5 md:col-span-6 min-[500px]:pl-5 max-sm:mt-5 flex flex-col justify-center">
-                    <div class="flex flex-col min-[500px]:flex-row min-[500px]:items-center justify-between">
-                        <div class="">
-                            <h5 class="font-manrope font-semibold text-2xl leading-9 text-black mb-6">{{ $order->product->name }}
-                            </h5>
-                            <p class="font-normal text-xl leading-8 text-gray-500">Quantity : <span
-                                    class="text-black font-semibold">{{ $order->total_amount }}</span></p>
-                        </div>
-
-                        <h5 class="font-manrope font-semibold text-3xl leading-10 text-black sm:text-right mt-3">
-                            {{ $order->product->price }} руб.
-                        </h5>
-                    </div>
-                </div>
+            <div class="relative overflow-x-auto m-auto w-2/3">
+                <table class="w-full text-sm rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            #
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Наименование
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Количество
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Цена
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Сумма
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 hover:underline py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <a href="{{ route('products.show', ['id' => $order->product->id]) }}">{{ $order->product->id }}</a>
+                    </th>
+                    <td class="px-6 py-4 text-center hover:underline">
+                        <a href="{{ route('products.show', ['id' => $order->product->id]) }}">{{ $order->product->name }}</a>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ $order->total_amount }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ $order->product->price }} руб
+                    </td>
+                    <td class="px-6 py-4 text-center ">
+                        {{ $order->product->price }} руб
+                    </td>
+                </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="flex items-center justify-center sm:justify-end w-full my-6">
+            <div class="flex items-center justify-center sm:justify-end w-full border-b border-gray-100 my-6">
                 <div class=" w-full">
+                    <div class="flex items-center justify-between mb-6 mt-6">
+                        <p class="font-normal text-xl leading-8 text-white">Всего</p>
+                        <p class="font-semibold text-xl leading-8 text-white">{{ $order->product->price }} руб</p>
+                    </div>
                     <div class="flex items-center justify-between mb-6">
-                        <p class="font-normal text-xl leading-8 text-white">Subtotal</p>
+                        <p class="font-normal text-xl leading-8 text-white">Доставка</p>
                         <p class="font-semibold text-xl leading-8 text-white">0 руб</p>
                     </div>
                     <div class="flex items-center justify-between mb-6">
-                        <p class="font-normal text-xl leading-8 text-white">Shipping Charge</p>
+                        <p class="font-normal text-xl leading-8 text-white">НДС</p>
                         <p class="font-semibold text-xl leading-8 text-white">0 руб</p>
                     </div>
                     <div class="flex items-center justify-between mb-6">
-                        <p class="font-normal text-xl leading-8 text-white">Taxes</p>
-                        <p class="font-semibold text-xl leading-8 text-white">0 руб</p>
-                    </div>
-                    <div class="flex items-center justify-between mb-6">
-                        <p class="font-normal text-xl leading-8 text-white">Discount</p>
+                        <p class="font-normal text-xl leading-8 text-white">Скидка</p>
                         <p class="font-semibold text-xl leading-8 text-white">0 руб</p>
                     </div>
                     <div class="flex items-center justify-between py-6 border-y border-gray-100">
-                        <p class="font-manrope font-semibold text-2xl leading-9 text-white">Total</p>
+                        <p class="font-manrope font-semibold text-2xl leading-9 text-white">Общая сумма</p>
                         <p class="font-manrope font-bold text-2xl leading-9 text-white">{{ $order->product->price }} руб</p>
                     </div>
                 </div>
