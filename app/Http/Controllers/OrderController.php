@@ -17,6 +17,13 @@ class OrderController extends Controller
         return view('orders.my-orders', compact('orders'));
     }
 
+    public function show(int $id, OrderService $orderService): View
+    {
+        $order = $orderService->showOrder($id);
+
+        return view('orders.order-show', compact('order'));
+    }
+
     public function create(ProductIdRequest $request): View
     {
         return view('orders.order-form', ['product_id' => $request->input('product_id')]);
