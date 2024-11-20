@@ -4,7 +4,7 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', [MainController::class, 'index'])->name('index');
@@ -22,3 +22,8 @@ Route::get('/orders', [OrderController::class, 'orders'])->middleware('auth')->n
 Route::get('/order/form', [OrderController::class, 'create'])->name('order.create');
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+
+// todo: добавить миддлвар
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+});
