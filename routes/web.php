@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrderController;
+use App\Http\Middleware\Manager;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
@@ -23,7 +24,6 @@ Route::get('/order/form', [OrderController::class, 'create'])->name('order.creat
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
 
-// todo: добавить миддлвар
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => [Manager::class]], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 });
