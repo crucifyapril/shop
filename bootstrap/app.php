@@ -1,5 +1,8 @@
 <?php
 
+use App\Enum\Roles;
+use App\Http\Middleware\Manager;
+use App\Http\Middleware\Owner;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,7 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            Roles::MANAGER->value => Manager::class,
+            Roles::OWNER->value => Owner::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

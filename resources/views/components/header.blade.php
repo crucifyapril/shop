@@ -64,6 +64,15 @@
                         </a>
                     </li>
                 @endif
+                @if(auth()->check() && auth()->user()->role->name === Roles::MANAGER->value || auth()->check() && auth()->user()->role->name === Roles::OWNER->value)
+                    <li>
+                        <a href="{{ route('admin.index') }}"
+                           class="block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0
+              {{ request()->routeIs('orders') ? 'text-primary-700 bg-primary-700' : 'text-gray-700 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 dark:text-gray-400 dark:hover:text-white' }}">
+                            Админ панель
+                        </a>
+                    </li>
+                @endif
                 <li>
                     <a href="#"
                        class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0
