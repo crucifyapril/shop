@@ -33,22 +33,22 @@ class Dashboard extends Page
      * @return list<MoonShineComponent>
      */
     public function components(): array
-	{
-		return [
+    {
+        return [
             Grid::make([
-            ValueMetric::make('Orders')
-                ->value(Order::query()->count())
-                ->icon('heroicons.shopping-bag')
-                ->columnSpan(4),
-            ValueMetric::make('Products')
-                ->value(Product::query()->count())
-                ->icon('heroicons.shopping-bag')
-                ->columnSpan(4),
-            ValueMetric::make('Users')
-                ->value(User::query()->has('orders')->count('id'))
-                ->icon('heroicons.users')
-                ->columnSpan(4)
+                ValueMetric::make('Orders')
+                    ->value(Order::query()->count())
+                    ->icon('heroicons.shopping-bag')
+                    ->columnSpan(4),
+                ValueMetric::make('Products')
+                    ->value(Product::query()->count())
+                    ->icon('heroicons.shopping-bag')
+                    ->columnSpan(4),
+                ValueMetric::make('Users')
+                    ->value(User::query()->has('orders')->count('id'))
+                    ->icon('heroicons.users')
+                    ->columnSpan(4)
             ])
         ];
-	}
+    }
 }
