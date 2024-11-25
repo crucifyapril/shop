@@ -13,6 +13,7 @@ services:
       - web-network-shop
 
   php-shop:
+    image: ${IMAGE}:${VERSION}
     build:
       context: ./.docker/
     container_name: php-shop

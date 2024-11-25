@@ -2,12 +2,16 @@ IMAGE = shop-learn
 VERSION = 1.0
 WORK_DIR = /var/www
 
+export IMAGE
+export VERSION
+export WORK_DIR
+
 .PHONY: vendor logs tests artisan
 
 build:
-	@docker build -t $(IMAGE):$(VERSION) ./.docker/
+	@docker compose build --build-arg IMAGE=$(IMAGE) --build-arg VERSION=$(VERSION)
 up:
-	@docker compose up -d
+	@docker  compose up -d
 down:
 	@docker compose down
 restart:
@@ -25,7 +29,7 @@ redis-bash:
 redis-logs:
 	@docker compose logs redis-shop
 vendor:
-	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) composer install
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php -m
 key-generate:
 	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan key:generate
 env:
