@@ -4,19 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Http\Requests\ProductIdRequest;
 use App\MoonShine\Resources\OrderResource;
 use App\MoonShine\Resources\ProductResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
-use MoonShine\MoonShine;
-use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
-use MoonShine\Resources\MoonShineUserResource;
-use MoonShine\Resources\MoonShineUserRoleResource;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\MenuElement;
-use MoonShine\Pages\Page;
-use Closure;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
