@@ -6,6 +6,8 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use MoonShine\Fields\Checkbox;
+use MoonShine\Fields\Number;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -23,10 +25,10 @@ class ProductResource extends ModelResource
             Block::make([
                 ID::make()->sortable(),
                 Text::make('Имя', 'name')->sortable(),
-                Text::make('Цена', 'price')->sortable(),
+                Number::make('Цена', 'price')->sortable(),
                 Text::make('Описание', 'description')->sortable(),
-                Text::make('Количество', 'quantity')->sortable(),
-                Text::make('Статус', 'is_available')->sortable(),
+                Number::make('Количество', 'quantity')->sortable(),
+                Checkbox::make('Доступен к продаже', 'is_available')->sortable(),
             ]),
         ];
     }
