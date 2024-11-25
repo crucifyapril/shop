@@ -36,15 +36,15 @@ class Dashboard extends Page
     {
         return [
             Grid::make([
-                ValueMetric::make('Orders')
+                ValueMetric::make('Заказы')
                     ->value(Order::query()->count())
                     ->icon('heroicons.shopping-bag')
                     ->columnSpan(4),
-                ValueMetric::make('Products')
+                ValueMetric::make('Товары')
                     ->value(Product::query()->count())
                     ->icon('heroicons.shopping-bag')
                     ->columnSpan(4),
-                ValueMetric::make('Users')
+                ValueMetric::make('Покупатели')
                     ->value(User::query()->has('orders')->count('id'))
                     ->icon('heroicons.users')
                     ->columnSpan(4)
