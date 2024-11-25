@@ -47,6 +47,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN docker-php-source delete
 RUN apt-get autoremove --purge -y && apt-get autoclean -y && apt-get clean -y
 
+
+RUN docker-php-ext-install zip exif && docker-php-ext-enable zip exif
+
 # Настройка пользователя для работы контейнера и взаимодействия прав
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www

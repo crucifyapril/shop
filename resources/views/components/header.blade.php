@@ -55,7 +55,7 @@
                         Каталог товаров
                     </a>
                 </li>
-                @if(auth()->check() && auth()->user()->role->name === Roles::BUYER->value)
+                @if(auth()->check() && auth()->user()->role->name === Roles::BUYER->value || auth()->check() && auth()->user()->role->name === Roles::MANAGER->value || auth()->check() && auth()->user()->role->name === Roles::OWNER->value)
                     <li>
                         <a href="{{ route('orders') }}"
                            class="block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0
@@ -66,7 +66,7 @@
                 @endif
                 @if(auth()->check() && auth()->user()->role->name === Roles::MANAGER->value || auth()->check() && auth()->user()->role->name === Roles::OWNER->value)
                     <li>
-                        <a href="{{ route('admin.index') }}"
+                        <a href="/admin"
                            class="block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0
               {{ request()->routeIs('orders') ? 'text-primary-700 bg-primary-700' : 'text-gray-700 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 dark:text-gray-400 dark:hover:text-white' }}">
                             Админ панель
