@@ -14,9 +14,6 @@ use MoonShine\Components\MoonShineComponent;
 
 class Dashboard extends Page
 {
-    /**
-     * @return array<string, string>
-     */
     public function breadcrumbs(): array
     {
         return [
@@ -29,9 +26,6 @@ class Dashboard extends Page
         return $this->title ?: 'Dashboard';
     }
 
-    /**
-     * @return list<MoonShineComponent>
-     */
     public function components(): array
     {
         return [
