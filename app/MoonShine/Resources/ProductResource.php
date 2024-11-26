@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use MoonShine\Fields\Checkbox;
 use MoonShine\Fields\Number;
+use MoonShine\Fields\Range;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -36,11 +37,11 @@ class ProductResource extends ModelResource
     public function filters(): array
     {
         return [
-            Text::make('ID', 'id'),
+            Number::make('ID', 'id'),
             Text::make('Имя', 'name'),
-            Number::make('Цена', 'price'),
+            Range::make('Цена', 'price'),
             Text::make('Описание', 'description'),
-            Number::make('Количество', 'quantity'),
+            Range::make('Количество', 'quantity'),
             Checkbox::make('Доступен к продаже', 'is_available'),
         ];
     }
