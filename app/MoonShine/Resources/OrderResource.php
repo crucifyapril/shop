@@ -6,6 +6,9 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
+use MoonShine\Fields\DateRange;
+use MoonShine\Fields\Number;
+use MoonShine\Fields\Range;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -28,6 +31,19 @@ class OrderResource extends ModelResource
                 Text::make('Дата создания', 'created_at')->sortable(),
                 Text::make('Комментарий', 'description')->sortable(),
             ]),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            Number::make('ID', 'id'),
+            Text::make('Статус', 'status'),
+            Text::make('Заказчик', 'user.name'),
+            Range::make('Сумма',  'total_amount'),
+            DateRange::make('Дата создания', 'created_at')
+                ->fromTo('date_from', 'date_to'),
+            Text::make('Комментарий', 'description'),
         ];
     }
 
