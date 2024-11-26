@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\MoonShine\Resources\OrderResource;
 use App\MoonShine\Resources\ProductResource;
+use App\MoonShine\Resources\UserResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Menu\MenuItem;
 
@@ -30,6 +31,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                 ->badge(fn() => 'Check'),
             MenuItem::make('Заказы', new OrderResource()),
             MenuItem::make('Товары', new ProductResource()),
+            MenuItem::make('Пользователи', new UserResource()),
         ];
     }
 
