@@ -40,7 +40,7 @@ class OrderResource extends ModelResource
             Number::make('ID', 'id'),
             Text::make('Статус', 'status'),
             Text::make('Заказчик', 'user.name'),
-            Range::make('Сумма',  'total_amount'),
+            Range::make('Сумма', 'total_amount'),
             DateRange::make('Дата создания', 'created_at')
                 ->fromTo('date_from', 'date_to'),
             Text::make('Комментарий', 'description'),
