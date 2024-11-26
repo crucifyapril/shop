@@ -33,6 +33,18 @@ class ProductResource extends ModelResource
         ];
     }
 
+    public function filters(): array
+    {
+        return [
+            Text::make('ID', 'id'),
+            Text::make('Имя', 'name'),
+            Number::make('Цена', 'price'),
+            Text::make('Описание', 'description'),
+            Number::make('Количество', 'quantity'),
+            Checkbox::make('Доступен к продаже', 'is_available'),
+        ];
+    }
+
     public function rules(Model $item): array
     {
         return [];
