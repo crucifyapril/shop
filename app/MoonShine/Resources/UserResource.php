@@ -38,7 +38,7 @@ class UserResource extends ModelResource
     public function filters(): array
     {
         return [
-            Text::make('ID', 'id'),
+            Number::make('ID', 'id'),
             Text::make('Имя', 'name'),
             Text::make('Email', 'email'),
             Number::make('Роль', 'role_id'),
