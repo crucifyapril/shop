@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use MoonShine\Fields\DateRange;
+use MoonShine\Fields\Email;
 use MoonShine\Fields\Number;
+use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -25,11 +29,25 @@ class UserResource extends ModelResource
                 ID::make()->sortable(),
                 Text::make('Имя', 'name')->sortable(),
                 Text::make('Email', 'email')->sortable(),
-                Text::make('Пароль', 'password')->hideOnIndex()->hideOnCreate()->hideOnUpdate(),
                 Number::make('Роль', 'role_id')->hideOnIndex()->hideOnCreate()->hideOnUpdate(),
                 Text::make('Создан', 'created_at')->sortable(),
                 Text::make('Обновлен', 'updated_at')->hideOnCreate()->hideOnUpdate(),
             ]),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            Number::make('ID', 'id'),
+            Text::make('Имя', 'name'),
+            Text::make('Email', 'email'),
+            Select::make('Роль', 'role_id')
+                ->options(fn() => Role::all()->pluck('name', 'id')->toArray()),
+            DateRange::make('Дата создания', 'created_at')
+                ->fromTo('date_from', 'date_to'),
+            DateRange::make('Дата обновления', 'updated_at')
+                ->fromTo('date_from', 'date_to')
         ];
     }
 
