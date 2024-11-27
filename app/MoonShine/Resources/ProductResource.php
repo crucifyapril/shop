@@ -40,8 +40,6 @@ class ProductResource extends ModelResource
             Number::make('ID', 'id'),
             Text::make('Имя', 'name'),
             Range::make('Цена', 'price'),
-            Text::make('Описание', 'description'),
-            Range::make('Количество', 'quantity'),
             Checkbox::make('Доступен к продаже', 'is_available'),
         ];
     }
