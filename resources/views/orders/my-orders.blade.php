@@ -43,7 +43,7 @@
                         {{ auth()->user()->name }} | {{ auth()->user()->email }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ $order->status }}
+                        {{ $order->status->name }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         {{ $order->product->price }} руб
