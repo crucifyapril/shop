@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-Enum Statuses: string
+enum Statuses: string
 {
     case PENDING = 'pending';
     case SUCCEEDED = 'succeeded';
