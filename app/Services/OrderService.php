@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enum\Statuses;
+use App\Models\Status;
 use App\Models\User;
 use App\Models\Order;
 use App\DTOs\OrderFormDTO;
@@ -14,6 +16,7 @@ class OrderService
     public function createOrder(OrderFormDTO $orderDTO): Order
     {
         $user = User::query()->where('email', $orderDTO->email)->get('id')->first();
+        $status = Status::query()->where('name', Statuses::PENDING)->first();
 
         if (!is_null($user)) {
             $userId = $user->id;
@@ -21,7 +24,7 @@ class OrderService
 
         return Order::query()->create([
             'total_amount' => 1,
-            'status' => 'pending',
+            'status_id' => $status->id,
             'user_id' => $userId ?? null,
             'phone' => $orderDTO->phone,
             'description' => $orderDTO->description,
