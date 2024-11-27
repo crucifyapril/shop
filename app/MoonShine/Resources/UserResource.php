@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\Number;
+use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
@@ -40,7 +42,8 @@ class UserResource extends ModelResource
             Number::make('ID', 'id'),
             Text::make('Имя', 'name'),
             Text::make('Email', 'email'),
-            Number::make('Роль', 'role_id'),
+            Select::make('Роль', 'role_id')
+                ->options(fn() => Role::all()->pluck('name', 'id')->toArray()),
             DateRange::make('Дата создания', 'created_at')
                 ->fromTo('date_from', 'date_to'),
             DateRange::make('Дата обновления', 'updated_at')
