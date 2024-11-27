@@ -27,7 +27,6 @@ class UserResource extends ModelResource
                 ID::make()->sortable(),
                 Text::make('Имя', 'name')->sortable(),
                 Text::make('Email', 'email')->sortable(),
-                Text::make('Пароль', 'password')->hideOnIndex()->hideOnCreate()->hideOnUpdate(),
                 Number::make('Роль', 'role_id')->hideOnIndex()->hideOnCreate()->hideOnUpdate(),
                 Text::make('Создан', 'created_at')->sortable(),
                 Text::make('Обновлен', 'updated_at')->hideOnCreate()->hideOnUpdate(),
