@@ -14,7 +14,7 @@
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 py-6 border-y border-gray-100 mb-6">
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Статус</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ $order->status }}</h6>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ $order->status->name }}</h6>
                 </div>
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">Заказчик</p>
