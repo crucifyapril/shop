@@ -40,7 +40,7 @@ class OrderResource extends ModelResource
     {
         return [
             Number::make('ID', 'id'),
-            Select::make('Статус', 'Status_id')
+            Select::make('Статус', 'status_id')
                 ->options(fn() => Status::all()->pluck('name', 'id')->toArray()),
             Range::make('Сумма', 'total_amount'),
             DateRange::make('Дата создания', 'created_at')
