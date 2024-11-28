@@ -53,6 +53,10 @@ class UserResource extends ModelResource
 
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ];
     }
 }
