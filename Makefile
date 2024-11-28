@@ -8,6 +8,7 @@ export WORK_DIR
 
 .PHONY: vendor logs tests artisan
 
+
 build:
 	@docker compose build --build-arg IMAGE=$(IMAGE) --build-arg VERSION=$(VERSION)
 up:
@@ -16,24 +17,20 @@ down:
 	@docker compose down
 restart:
 	@docker compose down && docker-compose up -d
-php-bash:
-	@docker compose exec php-shop bash
-php-logs:
-	@docker compose logs php-shop
-nginx-bash:
-	@docker compose exec nginx-shop bash
-nginx-logs:
-	@docker compose logs nginx-shop
-redis-bash:
-	@docker compose exec redis-shop bash
-redis-logs:
-	@docker compose logs redis-shop
+
+logs:
+	@docker compose logs -f
+
 vendor:
-	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php -m
-key-generate:
-	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan key:generate
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) composer install
+migrate:
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) php artisan migrate
+seed:
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) php artisan db:seed
 env:
 	@cp .env.example .env
+key-generate:
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan key:generate
 
 # Пример: make artisan c='php artisan tinker'
 artisan:
