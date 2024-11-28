@@ -27,7 +27,8 @@ class OrderResource extends ModelResource
         return [
             Block::make([
                 ID::make()->sortable(),
-                Text::make('Статус', 'status.name')->sortable(),
+                Select::make('Статус', 'status_id')
+                    ->options(fn() => Status::all()->pluck('name', 'id')->toArray())->sortable(),
                 Text::make('Заказчик', 'user.name')->sortable(),
                 Text::make('Сумма', 'total_amount')->sortable(),
                 Text::make('Дата создания', 'created_at')->sortable(),

@@ -29,7 +29,8 @@ class UserResource extends ModelResource
                 ID::make()->sortable(),
                 Text::make('Имя', 'name')->sortable(),
                 Text::make('Email', 'email')->sortable(),
-                Number::make('Роль', 'role_id')->hideOnIndex()->hideOnCreate()->hideOnUpdate(),
+                Select::make('Роль', 'role_id')
+                    ->options(fn() => Role::all()->pluck('name', 'id')->toArray())->sortable(),
                 Text::make('Создан', 'created_at')->sortable(),
                 Text::make('Обновлен', 'updated_at')->hideOnCreate()->hideOnUpdate(),
             ]),
