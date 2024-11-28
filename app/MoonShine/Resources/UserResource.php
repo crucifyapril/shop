@@ -55,8 +55,8 @@ class UserResource extends ModelResource
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'email', 'max:255'],
+            'role_id' => ['required', 'exists:roles,id'],
         ];
     }
 }

@@ -52,7 +52,7 @@ class OrderResource extends ModelResource
     {
         return [
             'user.name' => ['required', 'string', 'max:255'],
-            'status.name' => ['required', 'string'],
+            'status.name' => ['required'],
             'total_amount' => ['required', 'numeric'],
             'description' => ['string', 'max:255'],
         ];
