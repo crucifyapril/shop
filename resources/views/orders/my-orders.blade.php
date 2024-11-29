@@ -46,7 +46,7 @@
                         {{ $order->status->name }}
                     </td>
                     <td class="px-6 py-4 text-center">
-                        {{ $order->product->price }} руб
+                        {{ $order->total_amount }} руб
                     </td>
                     <td class="px-6 py-4 text-center">
                         {{ $order->created_at }}

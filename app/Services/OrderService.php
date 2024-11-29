@@ -10,6 +10,7 @@ use App\DTOs\OrderFormDTO;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
@@ -18,18 +19,24 @@ class OrderService
         $user = User::query()->where('email', $orderDTO->email)->get('id')->first();
         $status = Status::query()->where('name', Statuses::PENDING)->first();
 
+        $userId = null;
         if (!is_null($user)) {
             $userId = $user->id;
         }
 
-        return Order::query()->create([
-            'total_amount' => 1,
-            'status_id' => $status->id,
-            'user_id' => $userId ?? null,
-            'phone' => $orderDTO->phone,
-            'description' => $orderDTO->description,
-            'product_id' => $orderDTO->product_id,
-        ]);
+        DB::transaction(function () use ($orderDTO, $userId, $status, &$order) {
+            $order = Order::query()->create([
+                'total_amount' => 1,
+                'status_id' => $status->id,
+                'user_id' => $userId,
+                'phone' => $orderDTO->phone,
+                'description' => $orderDTO->description,
+            ]);
+
+            $order->products()->attach($orderDTO->product_id);
+        });
+
+        return $order;
     }
 
     public function getOrdersPaginated(int $count): LengthAwarePaginator
@@ -37,8 +44,17 @@ class OrderService
         return Order::query()->where('user_id', auth()->id())->paginate($count);
     }
 
-    public function showOrder(int $id): Order
+    public function showOrder(int $id): array
     {
-        return Order::query()->where('user_id', auth()->id())->find($id);
+        $order =  Order::query()->select(['id', 'description', 'total_amount', 'status_id'])->with(['status'])->where('user_id', auth()->id())->find($id);
+        $products = $order->products()->select(['products.id', 'name', 'price'])->get();
+
+        return [
+            'id' => $order->id,
+            'description' => $order->description,
+            'products' => $products,
+            'status' => $order->status->name,
+            'total_amount' => $order->total_amount
+        ];
     }
 }
