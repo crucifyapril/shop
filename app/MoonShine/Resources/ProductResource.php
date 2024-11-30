@@ -46,6 +46,11 @@ class ProductResource extends ModelResource
 
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric'],
+            'quantity' => ['required', 'numeric'],
+            'is_available' => ['required', 'boolean'],
+        ];
     }
 }

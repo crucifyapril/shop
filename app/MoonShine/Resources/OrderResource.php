@@ -51,6 +51,11 @@ class OrderResource extends ModelResource
 
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'user.name' => ['required', 'string', 'max:255'],
+            'status.name' => ['required'],
+            'total_amount' => ['required', 'numeric'],
+            'description' => ['string', 'max:255'],
+        ];
     }
 }
