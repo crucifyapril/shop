@@ -19,9 +19,4 @@ class Product extends Model
         'quantity',
         'is_available'
     ];
-
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class);
-    }
 }
