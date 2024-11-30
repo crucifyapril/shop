@@ -21,7 +21,7 @@ class OrderController extends Controller
     {
         $order = $orderService->showOrder($id);
 
-        return view('orders.order-show', compact('order'));
+        return view('orders.order-show', $order);
     }
 
     public function create(ProductIdRequest $request): View
