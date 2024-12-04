@@ -2,23 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Services\Cart\CartService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CartController extends Controller
 {
-    public function index(CartService $cart): View
-    {
-        return view('cart.index', $cart->get());
+    public function __construct(
+        private readonly CartService $cartService
+    ) {
     }
 
-    public function store(CartService $cartService, Request $request): View
+    public function index(): View
     {
-        $cartService->addItem($request->get('product_id'), ['quantity' => $request->get('quantity')]);
+        $cart = $this->cartService->get();
 
-        return view('cart.index', $cartService->get());
+        $products = Product::query()
+            ->whereIn('id', array_keys($cart))
+            ->get(['id', 'name', 'price'])
+            ->map(function ($product) use ($cart) {
+                return array_merge($product->toArray(), $cart[$product->id]);
+            });
+
+        return view('cart.index', ['cart' => $products]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $this->cartService->addItem(
+            $request->get('product_id'),
+            ['quantity' => $request->get('quantity')]
+        );
+
+        return redirect()->route('cart.index');
     }
 
     public function update(): JsonResponse
@@ -31,8 +50,10 @@ class CartController extends Controller
         return response()->json(['message' => 'удалить конкретный товар']);
     }
 
-    public function clear(): JsonResponse
+    public function clear(): RedirectResponse
     {
-        return response()->json(['message' => 'очистить всю корзину']);
+        $this->cartService->clear();
+
+        return redirect()->route('cart.index');
     }
 }

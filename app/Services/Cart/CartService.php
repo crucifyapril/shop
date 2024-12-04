@@ -2,6 +2,7 @@
 
 namespace App\Services\Cart;
 
+use Exception;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -27,6 +28,9 @@ class CartService
         return $this->cart->toArray();
     }
 
+    /**
+     * @throws Exception
+     */
     public function addItem(int $id, array $data): bool
     {
         $this->cart->addItem($id, $data);
@@ -40,6 +44,9 @@ class CartService
 
     public function clear()
     {
+        $this->cart->clear();
+
+        return $this->save();
     }
 
     private function generateKey(): string

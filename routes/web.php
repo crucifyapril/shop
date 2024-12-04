@@ -31,7 +31,7 @@ Route::group(['prefix' => 'admin1', 'middleware' => [Manager::class]], function 
 });
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index'); // Получить содержимое корзины
-Route::post('/cart', [CartController::class, 'store'])->name('cart.store')->withoutMiddleware([VerifyCsrfToken::class]); // Добавить товар в корзину
+Route::post('/cart', [CartController::class, 'store'])->name('cart.store'); // Добавить товар в корзину
 Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update'); // Обновить товар в корзине
 Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy'); // Удалить конкретный товар
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear'); // Очистить всю корзину

@@ -35,6 +35,8 @@ key-generate:
 # Пример: make artisan c='php artisan tinker'
 artisan:
 	@docker run -it --rm -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) $(c)
+optimize:
+	@docker run -it --rm -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) php artisan optimize:clear
 
 clean: clean-logs optimize clean-vendor
 clean-logs:

@@ -2,6 +2,8 @@
 
 namespace App\Services\Cart;
 
+use Exception;
+
 class Cart
 {
     private array $items = [];
@@ -11,14 +13,29 @@ class Cart
         return $this->items;
     }
 
+    /**
+     * @throws Exception
+     */
     public function addItem(int $id, array $data): void
     {
+        if (isset($this->items[$id])) {
+            $this->updateItem($id, $data);
+            return;
+        }
+
         $this->items[$id] = $data;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateItem(int $id, array $data): void
     {
-        $this->items[$id] = $data;
+        if (!isset($this->items[$id])) {
+            throw new Exception('Item not found');
+        }
+
+        $this->items[$id]['quantity'] += $data['quantity'];
     }
 
     public function removeItem(int $id): void
