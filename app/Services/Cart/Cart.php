@@ -36,6 +36,10 @@ class Cart
         }
 
         $this->items[$id]['quantity'] += $data['quantity'];
+
+        if ($this->items[$id]['quantity'] <= 0) {
+            $this->removeItem($id);
+        }
     }
 
     public function removeItem(int $id): void

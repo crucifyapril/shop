@@ -29,7 +29,7 @@ class CartController extends Controller
             return array_merge($product->toArray(), $cart[$product->id]);
         });
 
-        return view('cart.index', ['cart' => $products]);
+        return view('cart.index', ['products' => $products]);
     }
 
     public function store(Request $request): RedirectResponse
