@@ -21,11 +21,13 @@ class CartController extends Controller
         $cart = $this->cartService->get();
 
         $products = Product::query()
+            ->select(['id', 'name', 'price'])
             ->whereIn('id', array_keys($cart))
-            ->get(['id', 'name', 'price'])
-            ->map(function ($product) use ($cart) {
-                return array_merge($product->toArray(), $cart[$product->id]);
-            });
+            ->get();
+
+        $products = $products->map(function ($product) use ($cart) {
+            return array_merge($product->toArray(), $cart[$product->id]);
+        });
 
         return view('cart.index', ['cart' => $products]);
     }
