@@ -28,6 +28,8 @@ services:
     container_name: redis-shop
     image: redis:7.4.0-alpine
     restart: no
+    ports:
+      - "6379:6379"
     networks:
       - web-network-shop
 

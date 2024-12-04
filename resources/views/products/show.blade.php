@@ -32,6 +32,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="w-1/2 px-2">
+                    <form action="{{ route('cart.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit"
+                                class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                            Добавить в корзину
+                        </button>
+                    </form>
+                </div>
                 <div class="w-1/2 px-2"><a href="{{ route('order.create', ['product_id' => $product->id]) }}">
                         <button
                             class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
@@ -41,8 +52,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 @endsection
 
