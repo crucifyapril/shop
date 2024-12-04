@@ -22,7 +22,7 @@ logs:
 	@docker compose logs -f
 
 vendor:
-	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) composer install
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 composer composer install --ignore-platform-reqs
 migrate:
 	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) php artisan migrate
 seed:
@@ -45,15 +45,15 @@ clean-vendor:
 	@rm -fr ./vendor && rm -fr ./node_modules
 
 npm-install:
-	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm i
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:22.11 npm i
 npm-build:
-	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 npm run build
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:22.11 npm run build
 npm-dev:
-	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 -p 5173:5173 node:20.17 npm run dev
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 -p 5173:5173 node:22.11 npm run dev
 
 # Пример: make npm-run cmd='npm install -D tailwindcss'
 npm-run:
-	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:20.17 $(cmd)
+	@docker run -it --rm -v $$(pwd):/app -w /app --user 1000:1000 node:22.11 $(cmd)
 
 phpcs:
 	@docker run --rm -v .:/tools/app ghcr.io/aleksandrtm/php-tools phpcs
