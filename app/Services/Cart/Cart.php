@@ -57,11 +57,6 @@ class Cart
         return json_encode($this->items, JSON_FORCE_OBJECT);
     }
 
-    public function toArray(): array
-    {
-        return $this->items;
-    }
-
     public function init(string $data): void
     {
         if (empty($data)) {

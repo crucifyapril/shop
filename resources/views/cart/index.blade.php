@@ -7,6 +7,13 @@
 @section('content')
     <h1 class="text-3xl font-bold flex items-center justify-center mb-16 mt-10">Корзина</h1>
 
+    @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Ошибка:</strong>
+            <span class="block sm:inline">{{ $errors->first() }}</span>
+        </div>
+    @endif
+
     <div class="relative overflow-x-auto m-auto w-2/3">
         <table class="w-full text-sm rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -83,13 +90,14 @@
             </tbody>
         </table>
     </div>
-
-    <form action="{{ route('cart.clear') }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit">Очистить корзину</button>
-    </form>
-
+    @if($products->count() > 0)
+        <form action="{{ route('cart.clear') }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Очистить корзину</button>
+        </form>
+        <a href="{{ route('order.create') }}">Оформить заказ</a>
+    @endif
 @endsection
 
 @section('footer')

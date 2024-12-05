@@ -25,7 +25,7 @@ class CartService
         $data = $this->connection->get($this->getKey());
         $this->cart->load($data ?? '{}');
 
-        return $this->cart->toArray();
+        return $this->cart->getItems();
     }
 
     /**
@@ -38,11 +38,14 @@ class CartService
         return $this->save();
     }
 
-    public function removeItem()
+    public function removeItem(int $id): bool
     {
+        $this->cart->removeItem($id);
+
+        return $this->save();
     }
 
-    public function clear()
+    public function clear(): bool
     {
         $this->cart->clear();
 

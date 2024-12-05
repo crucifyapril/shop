@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Services\Cart\CartService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,6 +33,9 @@ class CartController extends Controller
         return view('cart.index', ['products' => $products]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(Request $request): RedirectResponse
     {
         $this->cartService->addItem(
@@ -47,9 +51,11 @@ class CartController extends Controller
         return response()->json(['message' => 'обновить товар в корзине']);
     }
 
-    public function destroy(): JsonResponse
+    public function destroy(int $id): RedirectResponse
     {
-        return response()->json(['message' => 'удалить конкретный товар']);
+        $this->cartService->removeItem($id);
+
+        return redirect()->route('cart.index');
     }
 
     public function clear(): RedirectResponse

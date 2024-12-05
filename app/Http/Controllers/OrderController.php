@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\ProductIdRequest;
 use App\Services\OrderService;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -24,14 +25,18 @@ class OrderController extends Controller
         return view('orders.order-show', $order);
     }
 
-    public function create(ProductIdRequest $request): View
+    public function create(): View
     {
-        return view('orders.order-form', ['product_id' => $request->input('product_id')]);
+        return view('orders.order-form');
     }
 
     public function submit(OrderService $orderService, OrderRequest $request): RedirectResponse
     {
-        $orderService->createOrder($request->toDTO());
+        try {
+            $orderService->createOrder($request->toDTO());
+        } catch (Exception $e) {
+            return redirect()->route('cart.index')->withErrors($e->getMessage());
+        }
 
         return redirect()->route('orders');
     }
