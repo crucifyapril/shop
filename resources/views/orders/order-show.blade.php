@@ -56,8 +56,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        @foreach($products as $product)
+                    @foreach($products as $product)
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 hover:underline py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <a href="{{ route('products.show', ['id' => $product->id]) }}">{{ $product->id }}</a>
@@ -66,17 +66,17 @@
                                 <a href="{{ route('products.show', ['id' => $product->id]) }}">{{ $product->name }}</a>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                1
+                                {{ $product->pivot->quantity }}
                             </td>
                             <td class="px-6 py-4 text-center">
                                 {{ $product->price }} руб
                             </td>
                             <td class="px-6 py-4 text-center ">
-                                {{ $product->price }} руб
+                                {{ $product->price * $product->pivot->quantity }} руб
                             </td>
-                        @endforeach
 
-                    </tr>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

@@ -17,7 +17,6 @@
 
     <form action="{{ route('order.submit') }}" method="POST">
         @csrf
-        <input type="text" name="product_id" value="{{ $product_id }}" hidden required />
         <div class="grid gap-6 mb-6">
             <div>
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Имя</label>

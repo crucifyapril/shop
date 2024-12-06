@@ -6,7 +6,7 @@ export IMAGE
 export VERSION
 export WORK_DIR
 
-.PHONY: vendor logs tests artisan
+.PHONY: vendor logs tests artisan migrate seed env key-generate build up down restart clean clean-logs clean-vendor optimize npm-install npm-build npm-dev npm-run phpcs
 
 
 build:
@@ -35,12 +35,12 @@ key-generate:
 # Пример: make artisan c='php artisan tinker'
 artisan:
 	@docker run -it --rm -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) $(c)
+optimize:
+	@docker run -it --rm -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) php artisan optimize:clear
 
 clean: clean-logs optimize clean-vendor
 clean-logs:
 	@sudo rm -fr ./.docker/logs/nginx/*
-optimize:
-	@docker compose exec php-shop bash -c "php artisan optimize:clear"
 clean-vendor:
 	@rm -fr ./vendor && rm -fr ./node_modules
 

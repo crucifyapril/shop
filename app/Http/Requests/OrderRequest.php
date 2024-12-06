@@ -19,7 +19,6 @@ class OrderRequest extends FormRequest
             'email' => 'required|string|email',
             'phone' => 'required|string',
             'description' => 'nullable|string',
-            'product_id' => 'required|exists:products,id',
         ];
     }
 
@@ -30,7 +29,6 @@ class OrderRequest extends FormRequest
             $this->input('email'),
             $this->input('phone'),
             $this->input('description'),
-            $this->input('product_id'),
         );
     }
 }

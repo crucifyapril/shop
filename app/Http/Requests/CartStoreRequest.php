@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductIdRequest extends FormRequest
+class CartStoreRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,8 @@ class ProductIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id'
+            'product_id' => 'exists:products,id',
+            'quantity' => 'required|integer|min:1'
         ];
     }
 }
