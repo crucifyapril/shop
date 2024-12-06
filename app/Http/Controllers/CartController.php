@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartStoreRequest;
 use App\Models\Product;
 use App\Services\Cart\CartService;
 use Exception;
@@ -36,10 +39,10 @@ class CartController extends Controller
     /**
      * @throws Exception
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CartStoreRequest $request): RedirectResponse
     {
         $this->cartService->addItem(
-            $request->get('product_id'),
+            (int)$request->get('product_id'),
             ['quantity' => $request->get('quantity')]
         );
 
