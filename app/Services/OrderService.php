@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -78,6 +79,12 @@ class OrderService
                 $model->quantity -= $product->quantity;
                 $model->save();
             }
+
+
+
+            Mail::raw('Order created', function ($message) use ($order) {
+                $message->to('danilpatuk@yandex.ru')->subject('Order created');
+            });
 
             $this->cartService->clear();
         });
