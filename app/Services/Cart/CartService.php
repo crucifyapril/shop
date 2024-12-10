@@ -2,6 +2,7 @@
 
 namespace App\Services\Cart;
 
+use App\Models\Product;
 use Exception;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,20 @@ class CartService
         $this->cart->load($data ?? '{}');
 
         return $this->cart->getItems();
+    }
+
+    public function getProducts()
+    {
+        $cart = $this->get();
+
+        $products = Product::query()
+            ->select(['id', 'name', 'price'])
+            ->whereIn('id', array_keys($cart))
+            ->get();
+
+        return $products->map(function ($product) use ($cart) {
+            return array_merge($product->toArray(), $cart[$product->id]);
+        });
     }
 
     /**

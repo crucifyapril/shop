@@ -22,16 +22,7 @@ class CartController extends Controller
 
     public function index(): View
     {
-        $cart = $this->cartService->get();
-
-        $products = Product::query()
-            ->select(['id', 'name', 'price'])
-            ->whereIn('id', array_keys($cart))
-            ->get();
-
-        $products = $products->map(function ($product) use ($cart) {
-            return array_merge($product->toArray(), $cart[$product->id]);
-        });
+        $products = $this->cartService->getProducts();
 
         return view('cart.index', ['products' => $products]);
     }
