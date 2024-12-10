@@ -75,21 +75,22 @@ class OrderService
                 $model = Product::query()->select(['id', 'quantity', 'name'])->find($product->id);
 
                 if ($model->quantity < $product->quantity) {
-                    throw new Exception('Товар ' . $model->name . ' недостаточно на складе, в наличии ' . $model->quantity);
+                    throw new Exception(
+                        'Товар ' . $model->name . ' недостаточно на складе, в наличии ' . $model->quantity
+                    );
                 }
 
                 $model->quantity -= $product->quantity;
                 $model->save();
             }
 
-
             $managerRoleId = Role::query()->where('name', Roles::MANAGER)->value('id');
 
-                $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
+            $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
 
-                foreach ($managers as $email) {
-                    Mail::to($email)->send(new ManagerNotification($order));
-                }
+            foreach ($managers as $email) {
+                Mail::to($email)->send(new ManagerNotification($order));
+            }
 
             Mail::to($orderDTO->email)->send(new OrderShipped($order));
 
