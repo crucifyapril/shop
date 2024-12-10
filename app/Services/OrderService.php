@@ -85,18 +85,15 @@ class OrderService
             }
 
 
-            $orderMail = Order::query()->find($order->id);
             $managerRoleId = Role::query()->where('name', Roles::MANAGER)->value('id');
 
-//            if ($order->status === Statuses::PENDING) {
                 $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
 
                 foreach ($managers as $email) {
-                    Mail::to($email)->send(new ManagerNotification($orderMail));
+                    Mail::to($email)->send(new ManagerNotification($order));
                 }
-//            }
 
-            Mail::to($orderDTO->email)->send(new OrderShipped($orderMail));
+            Mail::to($orderDTO->email)->send(new OrderShipped($order));
 
             $this->cartService->clear();
         });
