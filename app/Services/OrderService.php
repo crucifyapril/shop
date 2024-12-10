@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
+use App\Enum\Roles;
 use App\Enum\Statuses;
+use App\Mail\ManagerNotification;
+use App\Mail\OrderShipped;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Order;
 use App\DTOs\OrderFormDTO;
 use App\Services\Cart\CartService;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -72,12 +75,24 @@ class OrderService
                 $model = Product::query()->select(['id', 'quantity', 'name'])->find($product->id);
 
                 if ($model->quantity < $product->quantity) {
-                    throw new Exception('Товар ' . $model->name . ' недостаточно на складе, в наличии ' . $model->quantity);
+                    throw new Exception(
+                        'Товар ' . $model->name . ' недостаточно на складе, в наличии ' . $model->quantity
+                    );
                 }
 
                 $model->quantity -= $product->quantity;
                 $model->save();
             }
+
+            $managerRoleId = Role::query()->where('name', Roles::MANAGER)->value('id');
+
+            $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
+
+            foreach ($managers as $email) {
+                Mail::to($email)->send(new ManagerNotification($order));
+            }
+
+            Mail::to($orderDTO->email)->send(new OrderShipped($order));
 
             $this->cartService->clear();
         });
