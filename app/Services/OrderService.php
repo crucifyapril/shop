@@ -2,8 +2,12 @@
 
 namespace App\Services;
 
+use App\Enum\Roles;
 use App\Enum\Statuses;
+use App\Mail\ManagerNotification;
+use App\Mail\OrderShipped;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
 use App\Models\Order;
@@ -81,10 +85,18 @@ class OrderService
             }
 
 
+            $orderMail = Order::query()->find($order->id);
+            $managerRoleId = Role::query()->where('name', Roles::MANAGER)->value('id');
 
-            Mail::raw('Order created', function ($message) use ($order) {
-                $message->to('danilpatuk@yandex.ru')->subject('Order created');
-            });
+//            if ($order->status === Statuses::PENDING) {
+                $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
+
+                foreach ($managers as $email) {
+                    Mail::to($email)->send(new ManagerNotification($orderMail));
+                }
+//            }
+
+            Mail::to($orderDTO->email)->send(new OrderShipped($orderMail));
 
             $this->cartService->clear();
         });
