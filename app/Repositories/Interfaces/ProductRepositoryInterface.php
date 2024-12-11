@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -14,7 +13,7 @@ interface ProductRepositoryInterface
 
     public function findById(int $id);
 
-    public function ProductsInCart(array $select, $productIds);
+    public function productsInCart(array $select, $productIds);
 
     public function findWithSelect(array $select, int $id);
 }

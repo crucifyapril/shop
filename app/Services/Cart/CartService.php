@@ -35,7 +35,7 @@ class CartService
     {
         $cart = $this->get();
 
-        $products = $this->productRepository->ProductsInCart(['id', 'name', 'price'], array_keys($cart));
+        $products = $this->productRepository->productsInCart(['id', 'name', 'price'], array_keys($cart));
 
         return $products->map(function ($product) use ($cart) {
             return array_merge($product->toArray(), $cart[$product->id]);

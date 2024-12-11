@@ -16,9 +16,7 @@ final class AuthService
     public function __construct(
         protected readonly UserRepositoryInterface $userRepository,
         protected readonly RoleRepositoryInterface $roleRepository
-    )
-    {
-
+    ) {
     }
 
     public function createUser(RegisterFormDTO $dto)

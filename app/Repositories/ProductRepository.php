@@ -9,11 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function __construct(protected readonly Product $product)
-    {
-
-    }
-
     public function paginate(int $count, bool $isAvailable = true): LengthAwarePaginator
     {
         return Product::query()
@@ -35,7 +30,7 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::query()->find($id);
     }
 
-    public function ProductsInCart(array $select, $productIds): Collection
+    public function productsInCart(array $select, $productIds): Collection
     {
         return Product::query()
             ->select($select)
