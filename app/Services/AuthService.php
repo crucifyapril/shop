@@ -5,19 +5,27 @@ namespace App\Services;
 use App\DTOs\RegisterFormDTO;
 use App\DTOs\LoginFormDTO;
 use App\Enum\Roles;
-use App\Models\Role;
-use App\Models\User;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 final class AuthService
 {
-    public function createUser(RegisterFormDTO $dto): User
+    public function __construct(
+        protected readonly UserRepositoryInterface $userRepository,
+        protected readonly RoleRepositoryInterface $roleRepository
+    )
     {
-        $role = Role::query()->where('name', Roles::BUYER)->first();
 
-        return User::query()->create([
+    }
+
+    public function createUser(RegisterFormDTO $dto)
+    {
+        $role = $this->roleRepository->findByName(Roles::BUYER);
+
+        return $this->userRepository->create([
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => $dto->password,

@@ -2,16 +2,15 @@
 
 namespace App\Services;
 
-use App\Enum\Roles;
 use App\Enum\Statuses;
 use App\Mail\ManagerNotification;
 use App\Mail\OrderShipped;
-use App\Models\Product;
-use App\Models\Role;
-use App\Models\Status;
-use App\Models\User;
-use App\Models\Order;
 use App\DTOs\OrderFormDTO;
+use App\Repositories\Interfaces\OrderRepositoryInterface;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\StatusRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Services\Cart\CartService;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,17 +20,22 @@ use Illuminate\Support\Facades\Mail;
 class OrderService
 {
     public function __construct(
-        private CartService $cartService
+        private CartService $cartService,
+        protected readonly OrderRepositoryInterface $orderRepository,
+        protected readonly UserRepositoryInterface $userRepository,
+        protected readonly StatusRepositoryInterface $statusRepository,
+        protected readonly RoleRepositoryInterface $RoleRepository,
+        protected readonly ProductRepositoryInterface $productRepository
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function createOrder(OrderFormDTO $orderDTO): Order
+    public function createOrder(OrderFormDTO $orderDTO)
     {
-        $user = User::query()->where('email', $orderDTO->email)->get('id')->first();
-        $status = Status::query()->where('name', Statuses::PENDING)->first();
+        $user = $this->userRepository->findByEmail($orderDTO->email);
+        $status = $this->statusRepository->findByName(Statuses::PENDING);
 
         $userId = null;
         if (!is_null($user)) {
@@ -45,10 +49,9 @@ class OrderService
         }
 
         $productIds = array_keys($cart);
-        $products = Product::query()
-            ->select(['id', 'price'])
-            ->whereIn('id', $productIds)
-            ->get()
+        $products = $this
+            ->productRepository
+            ->productsInCart(['id', 'price'], $productIds)
             ->map(function ($product) use ($cart) {
                 $product->quantity = $cart[$product->id]['quantity'];
 
@@ -59,7 +62,7 @@ class OrderService
         $totalAmount = $this->getSumTotal($products);
 
         DB::transaction(function () use ($orderDTO, $userId, $status, &$order, $cart, $totalAmount, $products) {
-            $order = Order::query()->create([
+            $order = $this->orderRepository->create([
                 'total_amount' => $totalAmount,
                 'status_id' => $status->id,
                 'user_id' => $userId,
@@ -72,7 +75,7 @@ class OrderService
             }
 
             foreach ($products as $product) {
-                $model = Product::query()->select(['id', 'quantity', 'name'])->find($product->id);
+                $model = $this->productRepository->findWithSelect(['id', 'quantity', 'name'], $product->id);
 
                 if ($model->quantity < $product->quantity) {
                     throw new Exception(
@@ -84,11 +87,7 @@ class OrderService
                 $model->save();
             }
 
-            $managerRoleId = Role::query()->where('name', Roles::MANAGER)->value('id');
-
-            $managers = User::query()->where('role_id', $managerRoleId)->pluck('email');
-
-            foreach ($managers as $email) {
+            foreach ($this->RoleRepository->getManagerEmails() as $email) {
                 Mail::to($email)->send(new ManagerNotification($order));
             }
 
@@ -103,15 +102,12 @@ class OrderService
 
     public function getOrdersPaginated(int $count): LengthAwarePaginator
     {
-        return Order::query()->where('user_id', auth()->id())->paginate($count);
+        return $this->orderRepository->paginate($count);
     }
 
     public function showOrder(int $id): array
     {
-        $order = Order::query()->select(['id', 'description', 'total_amount', 'status_id'])->with(['status'])->where(
-            'user_id',
-            auth()->id()
-        )->find($id);
+        $order = $this->orderRepository->findOrderById($id);
 
         $products = $order->products()->select(['products.id', 'products.name', 'products.price'])->withPivot(
             'quantity'
