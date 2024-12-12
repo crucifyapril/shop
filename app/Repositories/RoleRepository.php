@@ -5,9 +5,8 @@ namespace App\Repositories;
 use App\Enum\Roles;
 use App\Models\Role;
 use App\Models\User;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
 
-class RoleRepository implements RoleRepositoryInterface
+class RoleRepository
 {
     public function findByName(Roles $name)
     {

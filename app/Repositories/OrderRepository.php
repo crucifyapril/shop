@@ -3,10 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Order;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class OrderRepository implements OrderRepositoryInterface
+class OrderRepository
 {
     public function create(array $data)
     {

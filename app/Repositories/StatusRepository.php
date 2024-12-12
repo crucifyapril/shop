@@ -4,9 +4,8 @@ namespace App\Repositories;
 
 use App\Enum\Statuses;
 use App\Models\Status;
-use App\Repositories\Interfaces\StatusRepositoryInterface;
 
-class StatusRepository implements StatusRepositoryInterface
+class StatusRepository
 {
     public function findByName(Statuses|string $name)
     {

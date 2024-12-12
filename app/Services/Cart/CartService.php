@@ -2,8 +2,7 @@
 
 namespace App\Services\Cart;
 
-use App\Models\Product;
-use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
 use Exception;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +16,7 @@ class CartService
 
     public function __construct(
         private readonly Cart $cart,
-        protected readonly ProductRepositoryInterface $productRepository
+        protected readonly ProductRepository $productRepository
     ) {
         $this->connection = Redis::connection('cart');
         $this->get();

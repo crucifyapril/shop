@@ -3,11 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Product;
-use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
-class ProductRepository implements ProductRepositoryInterface
+class ProductRepository
 {
     public function paginate(int $count, bool $isAvailable = true): LengthAwarePaginator
     {

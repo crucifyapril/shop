@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
-    public function __construct(protected readonly ProductRepositoryInterface $productRepository)
+    public function __construct(protected readonly ProductRepository $productRepository)
     {
     }
 

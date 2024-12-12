@@ -5,8 +5,8 @@ namespace App\Services;
 use App\DTOs\RegisterFormDTO;
 use App\DTOs\LoginFormDTO;
 use App\Enum\Roles;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\RoleRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -14,8 +14,8 @@ use Illuminate\Validation\ValidationException;
 final class AuthService
 {
     public function __construct(
-        protected readonly UserRepositoryInterface $userRepository,
-        protected readonly RoleRepositoryInterface $roleRepository
+        protected readonly UserRepository $userRepository,
+        protected readonly RoleRepository $roleRepository
     ) {
     }
 

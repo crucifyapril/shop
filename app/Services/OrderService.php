@@ -6,11 +6,11 @@ use App\Enum\Statuses;
 use App\Mail\ManagerNotification;
 use App\Mail\OrderShipped;
 use App\DTOs\OrderFormDTO;
-use App\Repositories\Interfaces\OrderRepositoryInterface;
-use App\Repositories\Interfaces\ProductRepositoryInterface;
-use App\Repositories\Interfaces\RoleRepositoryInterface;
-use App\Repositories\Interfaces\StatusRepositoryInterface;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\OrderRepository;
+use App\Repositories\ProductRepository;
+use App\Repositories\RoleRepository;
+use App\Repositories\StatusRepository;
+use App\Repositories\UserRepository;
 use App\Services\Cart\CartService;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,11 +21,11 @@ class OrderService
 {
     public function __construct(
         private CartService $cartService,
-        protected readonly OrderRepositoryInterface $orderRepository,
-        protected readonly UserRepositoryInterface $userRepository,
-        protected readonly StatusRepositoryInterface $statusRepository,
-        protected readonly RoleRepositoryInterface $RoleRepository,
-        protected readonly ProductRepositoryInterface $productRepository
+        protected readonly OrderRepository $orderRepository,
+        protected readonly UserRepository $userRepository,
+        protected readonly StatusRepository $statusRepository,
+        protected readonly RoleRepository $RoleRepository,
+        protected readonly ProductRepository $productRepository
     ) {
     }
 
