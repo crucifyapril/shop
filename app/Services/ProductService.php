@@ -2,30 +2,28 @@
 
 namespace App\Services;
 
-use App\Models\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
+    public function __construct(protected readonly ProductRepository $productRepository)
+    {
+    }
+
     public function getProductPaginated(int $count, bool $isAvailable = true): LengthAwarePaginator
     {
-        return Product::query()
-            ->where('is_available', $isAvailable)
-            ->paginate($count);
+        return $this->productRepository->paginate($count, $isAvailable);
     }
 
     public function getRandomProduct(int $count, bool $isAvailable = true): Collection
     {
-        return Product::query()
-            ->inRandomOrder()
-            ->limit($count)
-            ->where('is_available', $isAvailable)
-            ->get();
+        return $this->productRepository->findRandom($count, $isAvailable);
     }
 
-    public function getProductById(int $id): ?Product
+    public function getProductById(int $id)
     {
-        return Product::query()->find($id);
+        return $this->productRepository->findById($id);
     }
 }

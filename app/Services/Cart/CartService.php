@@ -2,7 +2,7 @@
 
 namespace App\Services\Cart;
 
-use App\Models\Product;
+use App\Repositories\ProductRepository;
 use Exception;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +15,8 @@ class CartService
     private Connection $connection;
 
     public function __construct(
-        private readonly Cart $cart
+        private readonly Cart $cart,
+        protected readonly ProductRepository $productRepository
     ) {
         $this->connection = Redis::connection('cart');
         $this->get();
@@ -33,10 +34,7 @@ class CartService
     {
         $cart = $this->get();
 
-        $products = Product::query()
-            ->select(['id', 'name', 'price'])
-            ->whereIn('id', array_keys($cart))
-            ->get();
+        $products = $this->productRepository->productsInCart(['id', 'name', 'price'], array_keys($cart));
 
         return $products->map(function ($product) use ($cart) {
             return array_merge($product->toArray(), $cart[$product->id]);
