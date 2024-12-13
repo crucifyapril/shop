@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\DTOs\PreOrderFormDTO;
 use App\Enum\Statuses;
+use App\Http\Requests\PreOrderRequest;
 use App\Mail\ManagerNotification;
+use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
 use App\DTOs\OrderFormDTO;
 use App\Repositories\OrderRepository;
@@ -49,8 +52,7 @@ class OrderService
         }
 
         $productIds = array_keys($cart);
-        $products = $this
-            ->productRepository
+        $products = $this->productRepository
             ->productsInCart(['id', 'price'], $productIds)
             ->map(function ($product) use ($cart) {
                 $product->quantity = $cart[$product->id]['quantity'];
@@ -130,5 +132,12 @@ class OrderService
         }
 
         return $totalAmount;
+    }
+
+    public function preOrderMail(PreOrderFormDTO $preOrderDTO): void
+    {
+        foreach ($this->RoleRepository->getManagerEmails() as $email) {
+            Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));
+        }
     }
 }
