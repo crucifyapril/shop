@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -38,5 +39,21 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders');
+    }
+
+    public function preOrder($productId)
+    {
+        return view('orders.pre-order', ['productId' => $productId]);
+    }
+
+    public function preOrderSubmit(OrderService $orderService, PreOrderRequest $request): RedirectResponse
+    {
+        try {
+            $orderService->preOrderMail($request->toDTO());
+        } catch (Exception $e) {
+            return redirect()->route('index')->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('index');
     }
 }

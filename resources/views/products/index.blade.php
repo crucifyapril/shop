@@ -7,6 +7,8 @@
 @section('content')
     <h1 class="flex items-center justify-center text-3xl font-bold mt-10 mb-16">Каталог товаров</h1>
 
+
+
     @include('components.product')
 
     <div class="flex items-center justify-center m-auto mt-8 w-1/4">

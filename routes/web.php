@@ -25,6 +25,8 @@ Route::get('/orders', [OrderController::class, 'orders'])->middleware('auth')->n
 Route::get('/order/form', [OrderController::class, 'create'])->name('order.create');
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+Route::get('/pre-order/{product_id}', [OrderController::class, 'preOrder'])->name('order.pre-order');
+Route::post('/pre-order/submit', [OrderController::class, 'preOrderSubmit'])->name('order.pre-order.submit');
 
 Route::group(['prefix' => 'admin1', 'middleware' => [Manager::class]], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
