@@ -5,10 +5,12 @@ namespace App\Services;
 use App\DTOs\PreOrderFormDTO;
 use App\Enum\Statuses;
 use App\Http\Requests\PreOrderRequest;
+use App\Http\Requests\PromoCodeRequest;
 use App\Mail\ManagerNotification;
 use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
 use App\DTOs\OrderFormDTO;
+use App\Models\PromoCode;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\RoleRepository;
@@ -27,7 +29,7 @@ class OrderService
         protected readonly OrderRepository $orderRepository,
         protected readonly UserRepository $userRepository,
         protected readonly StatusRepository $statusRepository,
-        protected readonly RoleRepository $RoleRepository,
+        protected readonly RoleRepository $roleRepository,
         protected readonly ProductRepository $productRepository
     ) {
     }
@@ -89,7 +91,7 @@ class OrderService
                 $model->save();
             }
 
-            foreach ($this->RoleRepository->getManagerEmails() as $email) {
+            foreach ($this->roleRepository->getManagerEmails() as $email) {
                 Mail::to($email)->send(new ManagerNotification($order));
             }
 
@@ -136,8 +138,22 @@ class OrderService
 
     public function preOrderMail(PreOrderFormDTO $preOrderDTO): void
     {
-        foreach ($this->RoleRepository->getManagerEmails() as $email) {
+        foreach ($this->roleRepository->getManagerEmails() as $email) {
             Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));
         }
+    }
+
+    public function applyPromo(PromoCodeRequest $request)
+    {
+        $promoCode = $this->orderRepository->promoCode($request);
+
+        if (!$promoCode) {
+            return back()->withErrors(['promo_code' => 'Промокод не найден.']);
+        }
+
+        // Примените скидку, например, добавив её в сессию
+        session(['promo_code' => $promoCode->code, 'discount' => $promoCode->discount]);
+
+        return back()->with('success', 'Промокод успешно применён!');
     }
 }

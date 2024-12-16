@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\PromoCodeRequest;
 use App\Models\Order;
+use App\Models\PromoCode;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class OrderRepository
@@ -23,5 +25,10 @@ class OrderRepository
             'user_id',
             auth()->id()
         )->find($id);
+    }
+
+    public function promoCode(PromoCodeRequest $request)
+    {
+        return PromoCode::query()->where('code', $request->input('promo_code'))->first();
     }
 }
