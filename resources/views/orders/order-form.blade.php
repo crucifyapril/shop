@@ -34,6 +34,10 @@
                 <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Комментарий</label>
                 <input type="text" id="description" name="description" value="{{ old('description') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
             </div>
+            <div class="mb-6">
+                <label for="promoCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Промокод</label>
+                <input type="text" id="promoCode" name="promoCode" value="{{ old('promoCode') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
+            </div>
         </div>
         <div class="flex items-start mb-6">
             <div class="flex items-center h-5">

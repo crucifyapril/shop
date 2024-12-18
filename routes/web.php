@@ -28,6 +28,8 @@ Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
 Route::get('/pre-order/{product_id}', [OrderController::class, 'preOrder'])->name('order.pre-order');
 Route::post('/pre-order/submit', [OrderController::class, 'preOrderSubmit'])->name('order.pre-order.submit');
 
+Route::post('/order/form/apply-promo', [OrderController::class, 'applyPromo'])->name('order.apply-promo');
+
 Route::group(['prefix' => 'admin1', 'middleware' => [Manager::class]], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 });

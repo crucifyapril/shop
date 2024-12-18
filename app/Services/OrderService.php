@@ -5,12 +5,15 @@ namespace App\Services;
 use App\DTOs\PreOrderFormDTO;
 use App\Enum\Statuses;
 use App\Http\Requests\PreOrderRequest;
+use App\Http\Requests\PromoCodeRequest;
 use App\Mail\ManagerNotification;
 use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
 use App\DTOs\OrderFormDTO;
+use App\Models\PromoCode;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\PromoCodeRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StatusRepository;
 use App\Repositories\UserRepository;
@@ -27,8 +30,9 @@ class OrderService
         protected readonly OrderRepository $orderRepository,
         protected readonly UserRepository $userRepository,
         protected readonly StatusRepository $statusRepository,
-        protected readonly RoleRepository $RoleRepository,
-        protected readonly ProductRepository $productRepository
+        protected readonly RoleRepository $roleRepository,
+        protected readonly ProductRepository $productRepository,
+        protected readonly PromoCodeRepository $promoCodeRepository
     ) {
     }
 
@@ -63,6 +67,19 @@ class OrderService
 
         $totalAmount = $this->getSumTotal($products);
 
+        // Применение промокода
+        if (!empty($orderDTO->promoCode)) {
+            $promoCode = $this->promoCodeRepository->findByCode($orderDTO->promoCode);
+
+            if (!$promoCode) {
+                throw new Exception('Invalid or expired promoCode');
+            }
+
+            // Применяем скидку
+            $discount = $promoCode->discount;
+            $totalAmount -= $totalAmount * ($discount / 100);
+        }
+
         DB::transaction(function () use ($orderDTO, $userId, $status, &$order, $cart, $totalAmount, $products) {
             $order = $this->orderRepository->create([
                 'total_amount' => $totalAmount,
@@ -89,7 +106,7 @@ class OrderService
                 $model->save();
             }
 
-            foreach ($this->RoleRepository->getManagerEmails() as $email) {
+            foreach ($this->roleRepository->getManagerEmails() as $email) {
                 Mail::to($email)->send(new ManagerNotification($order));
             }
 
@@ -136,7 +153,7 @@ class OrderService
 
     public function preOrderMail(PreOrderFormDTO $preOrderDTO): void
     {
-        foreach ($this->RoleRepository->getManagerEmails() as $email) {
+        foreach ($this->roleRepository->getManagerEmails() as $email) {
             Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));
         }
     }
