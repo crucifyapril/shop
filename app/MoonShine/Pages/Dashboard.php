@@ -6,6 +6,7 @@ namespace App\MoonShine\Pages;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\PromoCode;
 use App\Models\User;
 use MoonShine\Decorations\Grid;
 use MoonShine\Metrics\ValueMetric;
@@ -41,7 +42,11 @@ class Dashboard extends Page
                 ValueMetric::make('Покупатели')
                     ->value(User::query()->has('orders')->count('id'))
                     ->icon('heroicons.users')
-                    ->columnSpan(4)
+                    ->columnSpan(4),
+                ValueMetric::make('Промокоды')
+                    ->value(PromoCode::query()->count())
+                    ->icon('heroicons.shopping.bag')
+                    ->columnSpan(4),
             ])
         ];
     }

@@ -19,6 +19,7 @@ class OrderRequest extends FormRequest
             'email' => 'required|string|email',
             'phone' => 'required|string',
             'description' => 'nullable|string',
+            'promoCode' => 'nullable|string',
         ];
     }
 
@@ -29,6 +30,7 @@ class OrderRequest extends FormRequest
             $this->input('email'),
             $this->input('phone'),
             $this->input('description'),
+            $this->input('promoCode'),
         );
     }
 }

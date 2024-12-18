@@ -13,6 +13,7 @@ use App\DTOs\OrderFormDTO;
 use App\Models\PromoCode;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\PromoCodeRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\StatusRepository;
 use App\Repositories\UserRepository;
@@ -30,7 +31,8 @@ class OrderService
         protected readonly UserRepository $userRepository,
         protected readonly StatusRepository $statusRepository,
         protected readonly RoleRepository $roleRepository,
-        protected readonly ProductRepository $productRepository
+        protected readonly ProductRepository $productRepository,
+        protected readonly PromoCodeRepository $promoCodeRepository
     ) {
     }
 
@@ -64,6 +66,19 @@ class OrderService
 
 
         $totalAmount = $this->getSumTotal($products);
+
+        // Применение промокода
+        if (!empty($orderDTO->promoCode)) {
+            $promoCode = $this->promoCodeRepository->findByCode($orderDTO->promoCode);
+
+            if (!$promoCode) {
+                throw new Exception('Invalid or expired promoCode');
+            }
+
+            // Применяем скидку
+            $discount = $promoCode->discount;
+            $totalAmount -= $totalAmount * ($discount / 100);
+        }
 
         DB::transaction(function () use ($orderDTO, $userId, $status, &$order, $cart, $totalAmount, $products) {
             $order = $this->orderRepository->create([
@@ -141,19 +156,5 @@ class OrderService
         foreach ($this->roleRepository->getManagerEmails() as $email) {
             Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));
         }
-    }
-
-    public function applyPromo(PromoCodeRequest $request)
-    {
-        $promoCode = $this->orderRepository->promoCode($request);
-
-        if (!$promoCode) {
-            return back()->withErrors(['promo_code' => 'Промокод не найден.']);
-        }
-
-        // Примените скидку, например, добавив её в сессию
-        session(['promo_code' => $promoCode->code, 'discount' => $promoCode->discount]);
-
-        return back()->with('success', 'Промокод успешно применён!');
     }
 }

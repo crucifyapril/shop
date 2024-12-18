@@ -8,7 +8,8 @@ readonly class OrderFormDTO
         public string $name,
         public string $email,
         public string $phone,
-        public ?string $description
+        public ?string $description,
+        public ?string $promoCode
     ) {
     }
 }
