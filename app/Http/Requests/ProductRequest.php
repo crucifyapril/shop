@@ -22,15 +22,4 @@ class ProductRequest extends FormRequest
             'is_available' => ['required', 'boolean']
         ];
     }
-
-    public function toDTO(): ProductFormDTO
-    {
-        return new ProductFormDTO(
-            $this->input('name'),
-            $this->input('price'),
-            $this->input('description'),
-            $this->input('quantity'),
-            $this->input('is_available')
-        );
-    }
 }
