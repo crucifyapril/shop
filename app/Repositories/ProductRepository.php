@@ -37,29 +37,8 @@ class ProductRepository
         return Product::query()->select($select)->find($id);
     }
 
-    public function getAll(): Collection
-    {
-        return Product::all();
-    }
-
     public function findById(int $id)
     {
         return Product::query()->find($id);
-    }
-
-    public function create(array $data)
-    {
-        return Product::query()->create($data);
-    }
-
-    public function update(Product $product, array $data): Product
-    {
-        $product->update($data);
-        return $product;
-    }
-
-    public function delete(Product $product): ?bool
-    {
-        return $product->delete();
     }
 }
