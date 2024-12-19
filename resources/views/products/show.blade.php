@@ -53,6 +53,15 @@
                         </button>
                     </form>
                     @endif
+
+                    @if (auth()->check())
+                        <form action="{{ route('favorites.toggle', ['product' => $product->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="">
+                                {{ auth()->user()->favorites->contains($product->id) ? 'Удалить из избранного' : 'Добавить в избранное' }}
+                            </button>
+                        </form>
+                        @endif
                 </div>
             </div>
         </div>

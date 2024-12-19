@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\Manager;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -39,3 +40,6 @@ Route::post('/cart', [CartController::class, 'store'])->name('cart.store'); // �
 Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update'); // Обновить товар в корзине
 Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy'); // Удалить конкретный товар
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear'); // Очистить всю корзину
+
+Route::get('/favorites', [FavoriteController::class, 'index'])->middleware('auth')->name('favorites.index');
+Route::post('/favorites/toggle/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
