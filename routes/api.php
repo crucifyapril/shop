@@ -1,7 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
 
-//Route::group(['prefix' => 'cart', 'middleware' => 'auth'], function () {
-//});
+Route::apiResource('products', ApiProductController::class)->only('index', 'show');
