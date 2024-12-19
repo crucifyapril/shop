@@ -4,13 +4,10 @@ namespace App\Services;
 
 use App\DTOs\PreOrderFormDTO;
 use App\Enum\Statuses;
-use App\Http\Requests\PreOrderRequest;
-use App\Http\Requests\PromoCodeRequest;
 use App\Mail\ManagerNotification;
 use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
 use App\DTOs\OrderFormDTO;
-use App\Models\PromoCode;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PromoCodeRepository;
@@ -23,16 +20,16 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class OrderService
+readonly final class OrderService
 {
     public function __construct(
         private CartService $cartService,
-        protected readonly OrderRepository $orderRepository,
-        protected readonly UserRepository $userRepository,
-        protected readonly StatusRepository $statusRepository,
-        protected readonly RoleRepository $roleRepository,
-        protected readonly ProductRepository $productRepository,
-        protected readonly PromoCodeRepository $promoCodeRepository
+        private OrderRepository $orderRepository,
+        private UserRepository $userRepository,
+        private StatusRepository $statusRepository,
+        private RoleRepository $roleRepository,
+        private ProductRepository $productRepository,
+        private PromoCodeRepository $promoCodeRepository
     ) {
     }
 
