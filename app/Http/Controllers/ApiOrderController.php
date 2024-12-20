@@ -7,6 +7,7 @@ use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
 use Throwable;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiOrderController extends Controller
 {
@@ -22,7 +23,7 @@ class ApiOrderController extends Controller
         try {
             $order = $orderService->showOrder($id);
         } catch (Throwable) {
-            return response()->json(['message' => 'Такого заказа не существует'], 404);
+            return response()->json(['message' => 'Такого заказа не существует'], Response::HTTP_NOT_FOUND);
         }
 
         return response()->json($order);
@@ -33,7 +34,7 @@ class ApiOrderController extends Controller
         try {
             $orderService->createOrder($request->toDTO());
         } catch (Throwable) {
-            return response()->json(['message' => 'Произошла ошибка при создании заказа'], 400);
+            return response()->json(['message' => 'Произошла ошибка при создании заказа'], Response::HTTP_BAD_REQUEST);
         }
 
         return response()->json(['message' => 'Заказ успешно создан']);
@@ -44,7 +45,7 @@ class ApiOrderController extends Controller
         try {
             $orderService->preOrderMail($request->toDTO());
         } catch (Throwable) {
-            return response()->json(['message' => 'Произошла ошибка при отправке подзаказа'], 400);
+            return response()->json(['message' => 'Произошла ошибка при отправке подзаказа'], Response::HTTP_BAD_REQUEST);
         }
 
         return response()->json(['message' => 'Подзаказ успешно отправлен']);
