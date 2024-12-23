@@ -8,9 +8,11 @@ services:
 
 stages:
   - phpcs
+  - build
 
 variables:
   IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+  PHP_IMAGE: "registry.gitlab.com/img-docker/php:8.3.15-fpm-01016ecf"
 
 phpcs:
   stage: phpcs
@@ -18,3 +20,18 @@ phpcs:
     - apk add --no-cache make
     - make phpcs
   allow_failure: false
+
+build:
+  stage: build
+  script:
+    - echo $KEY_PHP_BASE_PASSWORD | docker login -u $KEY_PHP_BASE_USER --password-stdin registry.gitlab.com
+    - docker pull $PHP_IMAGE
+
+    - SHORT_TAG=${CI_COMMIT_SHA:0:8}
+    - docker build -t $IMAGE:latest -t $IMAGE:$SHORT_TAG ./.docker/
+
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - docker push $IMAGE:latest
+    - docker push $IMAGE:$SHORT_TAG
+  only:
+    - main
