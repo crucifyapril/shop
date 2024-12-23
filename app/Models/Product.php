@@ -19,4 +19,9 @@ class Product extends Model
         'quantity',
         'is_available'
     ];
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
 }
