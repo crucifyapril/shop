@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function loginData(): LoginFormData
+    public function loginFormData(): LoginFormData
     {
         return new LoginFormData(
             $this->input('email'),

@@ -20,7 +20,7 @@ class ApiAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            $data = $this->authService->jwtAuth($request->loginData());
+            $data = $this->authService->jwtAuth($request->loginFormData());
         } catch (Exception) {
             return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }

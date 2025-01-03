@@ -25,7 +25,7 @@ class AuthController
     public function login(LoginRequest $request, AuthService $authService): RedirectResponse
     {
         try {
-            $authService->login($request->loginData());
+            $authService->login($request->loginFormData());
 
             return redirect()->route('index')->with('success', 'Вы успешно вошли в систему.');
         } catch (ValidationException $e) {
