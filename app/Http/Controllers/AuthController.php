@@ -25,7 +25,7 @@ class AuthController
     public function login(LoginRequest $request, AuthService $authService): RedirectResponse
     {
         try {
-            $authService->login($request->toDTO());
+            $authService->login($request->loginData());
 
             return redirect()->route('index')->with('success', 'Вы успешно вошли в систему.');
         } catch (ValidationException $e) {

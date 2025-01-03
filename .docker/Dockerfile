@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/img-docker/php:8.3.15-fpm-4082fc9d
+FROM registry.gitlab.com/img-docker/php:8.3.15-fpm-01016ecf
 
 COPY ./config/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 

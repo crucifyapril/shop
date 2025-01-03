@@ -3,11 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use MoonShine\Fields\Relationships\HasMany;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property Role $role
+ */
+class User extends Authenticatable implements JWTSubject
 {
     protected $fillable = [
         'name',
@@ -30,8 +38,18 @@ class User extends Authenticatable
         return $this->hasOne(Order::class, 'user_id', 'id');
     }
 
-    public function favorites()
+    public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'favorites')->withTimestamps();
+    }
+
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [];
     }
 }
