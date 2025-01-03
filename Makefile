@@ -32,6 +32,9 @@ env:
 key-generate:
 	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan key:generate
 
+jwt-secret:
+	@docker run -it --rm -w $(WORK_DIR) -v .:$(WORK_DIR) --user 1000:1000 $(IMAGE):$(VERSION) php artisan jwt:secret
+
 # Пример: make artisan c='php artisan tinker'
 artisan:
 	@docker run -it --rm -v .:$(WORK_DIR) --network=web-network-shop --user 1000:1000 $(IMAGE):$(VERSION) $(c)
