@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\LoginFormDTO;
+use App\DTOs\LoginFormData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -30,9 +30,9 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): LoginFormDTO
+    public function loginFormData(): LoginFormData
     {
-        return new LoginFormDTO(
+        return new LoginFormData(
             $this->input('email'),
             $this->input('password')
         );
