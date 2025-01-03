@@ -6,11 +6,12 @@ use App\Http\Controllers\ApiProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::get('/login', [ApiAuthController::class, 'login']);
+    Route::post('/login', [ApiAuthController::class, 'login']);
     Route::get('/refresh', [ApiAuthController::class, 'refresh']);
+    Route::post('/register', [ApiAuthController::class, 'register']);
 
     Route::middleware('auth:api')->group(function () {
-        Route::get('/logout', [ApiAuthController::class, 'logout']);
+        Route::post('/logout', [ApiAuthController::class, 'logout']);
         Route::get('/user', [ApiAuthController::class, 'user']);
     });
 });

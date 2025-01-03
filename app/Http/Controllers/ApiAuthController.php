@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -22,10 +23,21 @@ class ApiAuthController extends Controller
         try {
             $data = $this->authService->jwtAuth($request->loginFormData());
         } catch (Exception) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json($data);
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        try {
+            $this->authService->createUser($request->toDTO());
+        } catch (Exception) {
+            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function logout(): JsonResponse
@@ -33,7 +45,7 @@ class ApiAuthController extends Controller
         try {
             $this->authService->jwtLogout();
         } catch (Exception) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json(['success' => true]);
@@ -44,7 +56,7 @@ class ApiAuthController extends Controller
         try {
             $data = $this->authService->jwtRefresh();
         } catch (Exception) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json($data);
@@ -55,7 +67,7 @@ class ApiAuthController extends Controller
         $data = $this->authService->getUserInfo();
 
         if (empty($data)) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json($data);
