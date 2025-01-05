@@ -16,6 +16,8 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
+Route::get('/products/random', [ApiProductController::class, 'random']);
+
 Route::apiResource('products', ApiProductController::class)->only('index', 'show');
 
 Route::get('/orders', [ApiOrderController::class, 'orders']);
