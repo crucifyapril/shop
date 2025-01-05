@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\OrderFormDTO;
+use App\Dto\OrderFormDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderRequest extends FormRequest
@@ -23,9 +23,9 @@ class OrderRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): OrderFormDTO
+    public function toDto(): OrderFormDto
     {
-        return new OrderFormDTO(
+        return new OrderFormDto(
             $this->input('name'),
             $this->input('email'),
             $this->input('phone'),

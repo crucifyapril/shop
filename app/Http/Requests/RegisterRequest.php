@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\RegisterFormDTO;
+use App\Dto\RegisterFormDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -29,9 +29,9 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): RegisterFormDTO
+    public function toDto(): RegisterFormDto
     {
-        return new RegisterFormDTO(
+        return new RegisterFormDto(
             $this->input('name'),
             $this->input('email'),
             bcrypt($this->input('password'))

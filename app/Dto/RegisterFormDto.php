@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\Dto;
 
-readonly class RegisterFormDTO
+readonly class RegisterFormDto
 {
     public function __construct(
         public string $name,

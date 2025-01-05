@@ -35,7 +35,7 @@ class AuthController
 
     public function register(RegisterRequest $request, AuthService $authService): RedirectResponse
     {
-        $authService->createUser($request->toDTO());
+        $authService->createUser($request->toDto());
 
         return redirect()->route('viewFormLogin')->with('success', 'Регистрация прошла успешно! Пожалуйста, войдите.');
     }

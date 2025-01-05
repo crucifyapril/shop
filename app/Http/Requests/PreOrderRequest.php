@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\DTOs\PreOrderFormDTO;
+use App\Dto\PreOrderFormDto;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PreOrderRequest extends FormRequest
@@ -21,9 +21,9 @@ class PreOrderRequest extends FormRequest
         ];
     }
 
-    public function toDTO(): PreOrderFormDTO
+    public function toDto(): PreOrderFormDto
     {
-        return new PreOrderFormDTO(
+        return new PreOrderFormDto(
             $this->input('email'),
             $this->input('description'),
             $this->input('product_id')
