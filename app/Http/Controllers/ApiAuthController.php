@@ -21,7 +21,7 @@ class ApiAuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            $data = $this->authService->jwtAuth($request->loginFormData());
+            $data = $this->authService->jwtAuth($request->loginFormDto());
         } catch (Exception) {
             return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
@@ -32,7 +32,7 @@ class ApiAuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         try {
-            $this->authService->createUser($request->toDTO());
+            $this->authService->createUser($request->toDto());
         } catch (Exception) {
             return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }

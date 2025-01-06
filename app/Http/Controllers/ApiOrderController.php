@@ -32,7 +32,7 @@ class ApiOrderController extends Controller
     public function submit(OrderService $orderService, OrderRequest $request): JsonResponse
     {
         try {
-            $orderService->createOrder($request->toDTO());
+            $orderService->createOrder($request->toDto());
         } catch (Throwable) {
             return response()->json(['message' => 'Произошла ошибка при создании заказа'], Response::HTTP_BAD_REQUEST);
         }
@@ -43,7 +43,7 @@ class ApiOrderController extends Controller
     public function preOrderSubmit(OrderService $orderService, PreOrderRequest $request): JsonResponse
     {
         try {
-            $orderService->preOrderMail($request->toDTO());
+            $orderService->preOrderMail($request->toDto());
         } catch (Throwable) {
             return response()->json(['message' => 'Произошла ошибка при отправке подзаказа'], Response::HTTP_BAD_REQUEST);
         }

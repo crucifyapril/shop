@@ -33,7 +33,7 @@ class OrderController extends Controller
     public function submit(OrderService $orderService, OrderRequest $request): RedirectResponse
     {
         try {
-            $orderService->createOrder($request->toDTO());
+            $orderService->createOrder($request->toDto());
         } catch (Exception $e) {
             return redirect()->route('cart.index')->withErrors($e->getMessage());
         }
@@ -49,7 +49,7 @@ class OrderController extends Controller
     public function preOrderSubmit(OrderService $orderService, PreOrderRequest $request): RedirectResponse
     {
         try {
-            $orderService->preOrderMail($request->toDTO());
+            $orderService->preOrderMail($request->toDto());
         } catch (Exception $e) {
             return redirect()->route('index')->withErrors($e->getMessage());
         }

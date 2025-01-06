@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\DTOs\RegisterFormDTO;
-use App\DTOs\LoginFormData;
+use App\Dto\RegisterFormDto;
+use App\Dto\LoginFormDto;
 use App\Enum\Roles;
 use App\Models\User;
 use App\Repositories\RoleRepository;
@@ -22,7 +22,7 @@ final readonly class AuthService
     ) {
     }
 
-    public function createUser(RegisterFormDTO $dto): User
+    public function createUser(RegisterFormDto $dto): User
     {
         $role = $this->roleRepository->findByName(Roles::BUYER);
 
@@ -37,7 +37,7 @@ final readonly class AuthService
     /**
      * @throws ValidationException
      */
-    public function login(LoginFormData $dto): true
+    public function login(LoginFormDto $dto): true
     {
         if (!Auth::attempt(['email' => $dto->email, 'password' => $dto->password])) {
             throw ValidationException::withMessages([
@@ -76,7 +76,7 @@ final readonly class AuthService
     /**
      * @throws Exception
      */
-    public function jwtAuth(LoginFormData $credentials): array
+    public function jwtAuth(LoginFormDto $credentials): array
     {
         $token = JWTAuth::attempt($credentials->toArray());
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\Dto;
 
-readonly class PreOrderFormDTO
+readonly class PreOrderFormDto
 {
     public function __construct(
         public string $email,

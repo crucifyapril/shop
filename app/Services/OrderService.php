@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\DTOs\PreOrderFormDTO;
+use App\Dto\PreOrderFormDto;
 use App\Enum\Statuses;
 use App\Mail\ManagerNotification;
 use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
-use App\DTOs\OrderFormDTO;
+use App\Dto\OrderFormDto;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PromoCodeRepository;
@@ -36,7 +36,7 @@ readonly final class OrderService
     /**
      * @throws Exception
      */
-    public function createOrder(OrderFormDTO $orderDTO)
+    public function createOrder(OrderFormDto $orderDTO)
     {
         $user = $this->userRepository->findByEmail($orderDTO->email);
         $status = $this->statusRepository->findByName(Statuses::PENDING);
@@ -148,7 +148,7 @@ readonly final class OrderService
         return $totalAmount;
     }
 
-    public function preOrderMail(PreOrderFormDTO $preOrderDTO): void
+    public function preOrderMail(PreOrderFormDto $preOrderDTO): void
     {
         foreach ($this->roleRepository->getManagerEmails() as $email) {
             Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));

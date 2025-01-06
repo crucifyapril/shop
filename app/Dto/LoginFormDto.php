@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\Dto;
 
-readonly class LoginFormData
+readonly class LoginFormDto
 {
     public function __construct(
         public string $email,

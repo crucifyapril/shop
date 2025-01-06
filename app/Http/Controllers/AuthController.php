@@ -25,7 +25,7 @@ class AuthController
     public function login(LoginRequest $request, AuthService $authService): RedirectResponse
     {
         try {
-            $authService->login($request->loginFormData());
+            $authService->login($request->loginFormDto());
 
             return redirect()->route('index')->with('success', 'Вы успешно вошли в систему.');
         } catch (ValidationException $e) {
@@ -35,7 +35,7 @@ class AuthController
 
     public function register(RegisterRequest $request, AuthService $authService): RedirectResponse
     {
-        $authService->createUser($request->toDTO());
+        $authService->createUser($request->toDto());
 
         return redirect()->route('viewFormLogin')->with('success', 'Регистрация прошла успешно! Пожалуйста, войдите.');
     }
