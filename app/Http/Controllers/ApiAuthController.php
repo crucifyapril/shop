@@ -9,6 +9,8 @@ use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiAuthController extends Controller
@@ -20,13 +22,13 @@ class ApiAuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        try {
-            $data = $this->authService->jwtAuth($request->loginFormDto());
-        } catch (Exception) {
-            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return response()->json($data);
+        return response()->json(Auth::user());
     }
 
     public function register(RegisterRequest $request): JsonResponse
@@ -40,26 +42,15 @@ class ApiAuthController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         try {
-            $this->authService->jwtLogout();
+            $result = $this->authService->apiLogout($request);
         } catch (Exception) {
             return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }
 
-        return response()->json(['success' => true]);
-    }
-
-    public function refresh(): JsonResponse
-    {
-        try {
-            $data = $this->authService->jwtRefresh();
-        } catch (Exception) {
-            return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
-        }
-
-        return response()->json($data);
+        return response()->json(['success' => $result]);
     }
 
     public function user(): JsonResponse
