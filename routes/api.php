@@ -10,7 +10,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/refresh', [ApiAuthController::class, 'refresh']);
     Route::post('/register', [ApiAuthController::class, 'register']);
 
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [ApiAuthController::class, 'logout']);
         Route::get('/user', [ApiAuthController::class, 'user']);
     });

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @property int $id
@@ -15,7 +14,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $password
  * @property Role $role
  */
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     protected $fillable = [
         'name',
@@ -41,15 +40,5 @@ class User extends Authenticatable implements JWTSubject
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'favorites')->withTimestamps();
-    }
-
-    public function getJWTIdentifier(): mixed
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims(): array
-    {
-        return [];
     }
 }

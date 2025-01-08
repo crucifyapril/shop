@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Dto\RegisterFormDto;
@@ -8,11 +10,9 @@ use App\Enum\Roles;
 use App\Models\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 final readonly class AuthService
 {
@@ -56,6 +56,13 @@ final readonly class AuthService
         $request->session()->regenerateToken();
     }
 
+    public function apiLogout(Request $request): bool
+    {
+        auth()->guard('web')->logout();
+
+        return $request->session()->invalidate();
+    }
+
     public function getUserInfo(): array
     {
         /** @var $user User */
@@ -71,34 +78,5 @@ final readonly class AuthService
             'email' => $user->email,
             'role' => $user->role->name
         ];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function jwtAuth(LoginFormDto $credentials): array
-    {
-        $token = JWTAuth::attempt($credentials->toArray());
-
-        if ($token === false) {
-            throw new Exception('Неверный логин или пароль');
-        }
-
-        return ['token' => $token];
-    }
-
-    public function jwtRefresh(): array
-    {
-        $token = JWTAuth::refresh(JWTAuth::getToken());
-
-        return ['token' => $token];
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function jwtLogout(): void
-    {
-        JWTAuth::invalidate(JWTAuth::getToken());
     }
 }
