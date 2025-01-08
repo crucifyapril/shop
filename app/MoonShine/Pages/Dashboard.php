@@ -45,7 +45,7 @@ class Dashboard extends Page
                     ->columnSpan(4),
                 ValueMetric::make('Промокоды')
                     ->value(PromoCode::query()->count())
-                    ->icon('heroicons.shopping.bag')
+                    ->icon('heroicons.shopping-bag')
                     ->columnSpan(4),
             ])
         ];
