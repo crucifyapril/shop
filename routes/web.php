@@ -11,8 +11,8 @@ use App\Http\Controllers\ProductController;
 Route::get('/', [MainController::class, 'index'])->name('index');
 
 Route::group(['prefix' => 'products'], function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/{id}', [ProductController::class, 'show'])->name('products.show');
 });
 
 Route::group(['prefix' => 'auth'], function () {
