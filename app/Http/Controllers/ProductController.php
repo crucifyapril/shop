@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductShowRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Services\ProductService;
