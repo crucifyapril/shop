@@ -12,7 +12,7 @@ Route::get('/', [MainController::class, 'index'])->name('index');
 
 Route::group(['prefix' => 'products'], function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/{id}', [ProductController::class, 'show'])->name('products.show')->whereNumber('id');
 });
 
 Route::group(['prefix' => 'auth'], function () {
