@@ -7,9 +7,14 @@ use Illuminate\View\View;
 
 class MainController
 {
-    public function index(ProductService $productService): View
+    public function __construct(
+        private readonly ProductService $productService
+    ) {
+    }
+
+    public function index(): View
     {
-        $products = $productService->getRandomProduct(5);
+        $products = $this->productService->getRandomProduct(5);
 
         return view('index', compact('products'));
     }

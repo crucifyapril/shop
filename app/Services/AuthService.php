@@ -17,8 +17,8 @@ use Illuminate\Validation\ValidationException;
 final readonly class AuthService
 {
     public function __construct(
-        protected UserRepository $userRepository,
-        protected RoleRepository $roleRepository
+        private UserRepository $userRepository,
+        private RoleRepository $roleRepository
     ) {
     }
 

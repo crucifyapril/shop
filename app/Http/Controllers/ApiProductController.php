@@ -10,16 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiProductController extends Controller
 {
-    public function index(ProductService $productService): JsonResponse
+    public function __construct(
+        private readonly ProductService $productService
+    ) {
+    }
+    public function index(): JsonResponse
     {
-        $products = $productService->getProductPaginated(15);
+        $products = $this->productService->getProductPaginated(15);
 
         return response()->json($products);
     }
 
-    public function show(int $id, productService $productService): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $product = $productService->getProductById($id);
+        $product = $this->productService->getProductById($id);
 
         if (!$product) {
             return response()->json('Товар не найден', Response::HTTP_NOT_FOUND);
@@ -28,9 +32,9 @@ class ApiProductController extends Controller
         return response()->json($product);
     }
 
-    public function random(ProductService $productService): JsonResponse
+    public function random(): JsonResponse
     {
-        $product = $productService->getRandomProduct(15);
+        $product = $this->productService->getRandomProduct(15);
 
         return response()->json($product);
     }

@@ -10,8 +10,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class AuthController
+readonly class AuthController
 {
+    public function __construct(
+        private AuthService $authService
+    ) {
+    }
+
     public function viewFormLogin(): View
     {
         return view('auth.login');
@@ -22,10 +27,10 @@ class AuthController
         return view('auth.register');
     }
 
-    public function login(LoginRequest $request, AuthService $authService): RedirectResponse
+    public function login(LoginRequest $request): RedirectResponse
     {
         try {
-            $authService->login($request->loginFormDto());
+            $this->authService->login($request->loginFormDto());
 
             return redirect()->route('index')->with('success', 'Вы успешно вошли в систему.');
         } catch (ValidationException $e) {
@@ -33,16 +38,16 @@ class AuthController
         }
     }
 
-    public function register(RegisterRequest $request, AuthService $authService): RedirectResponse
+    public function register(RegisterRequest $request): RedirectResponse
     {
-        $authService->createUser($request->toDto());
+        $this->authService->createUser($request->toDto());
 
         return redirect()->route('viewFormLogin')->with('success', 'Регистрация прошла успешно! Пожалуйста, войдите.');
     }
 
-    public function logout(Request $request, AuthService $authService): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
-        $authService->logout($request);
+        $this->authService->logout($request);
 
         return redirect()->route('index');
     }
