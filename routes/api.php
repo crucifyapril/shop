@@ -16,12 +16,19 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
-Route::get('/products/random', [ApiProductController::class, 'random']);
+Route::group(['prefix' => 'products'], function () {
+    Route::get('/', [ApiProductController::class, 'index']);
+    Route::get('/random', [ApiProductController::class, 'random']);
+    Route::get('/{id}', [ApiProductController::class, 'show']);
+});
 
-Route::apiResource('products', ApiProductController::class)->only('index', 'show');
+Route::group(['prefix' => 'orders'], function () {
+    Route::get('/', [ApiOrderController::class, 'orders']);
+    Route::get('/{id}', [ApiOrderController::class, 'show']);
+    Route::post('/submit', [ApiOrderController::class, 'submit']);
+});
 
-Route::get('/orders', [ApiOrderController::class, 'orders']);
-Route::get('/order/{id}', [ApiOrderController::class, 'show']);
-Route::post('/order/submit', [ApiOrderController::class, 'submit']);
-Route::post('/pre-order/submit', [ApiOrderController::class, 'preOrderSubmit']);
-Route::get('/pre-order/{product_id}', [ApiOrderController::class, 'preOrder']);
+Route::group(['prefix' => 'pre-order'], function () {
+    Route::post('/submit', [ApiOrderController::class, 'preOrderSubmit']);
+    Route::get('/{product_id}', [ApiOrderController::class, 'preOrder']);
+});
