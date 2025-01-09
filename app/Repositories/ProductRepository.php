@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\ProductShowRequest;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;

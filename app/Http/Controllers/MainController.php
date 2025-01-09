@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enum\Roles;
 use App\Services\ProductService;
 use Illuminate\View\View;
 
