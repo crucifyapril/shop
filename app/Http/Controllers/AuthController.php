@@ -40,7 +40,7 @@ readonly class AuthController
 
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $this->authService->createUser($request->toDto());
+        $this->authService->createUser($request->registerFormDto());
 
         return redirect()->route('viewFormLogin')->with('success', 'Регистрация прошла успешно! Пожалуйста, войдите.');
     }
