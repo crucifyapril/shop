@@ -19,7 +19,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'products'], function () {
     Route::get('/', [ApiProductController::class, 'index']);
     Route::get('/random', [ApiProductController::class, 'random']);
-    Route::get('/{id}', [ApiProductController::class, 'show'])->whereNumber('id');
+    Route::get('/{id}', [ApiProductController::class, 'show']);
 });
 
 Route::group(['prefix' => 'orders'], function () {
