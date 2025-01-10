@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductShowRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Services\ProductService;
@@ -20,9 +21,9 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    public function show(int $id): RedirectResponse|View
+    public function show(ProductShowRequest $request): RedirectResponse|View
     {
-        $product = $this->productService->getProductById($id);
+        $product = $this->productService->getProductById($request->get('id'));
 
         if (!$product) {
             return redirect()->route('products.index')->with('error', 'Товар не найден');

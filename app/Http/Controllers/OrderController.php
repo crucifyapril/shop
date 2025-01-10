@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderShowRequest;
 use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 
 class OrderController extends Controller
@@ -23,9 +26,9 @@ class OrderController extends Controller
         return view('orders.my-orders', compact('orders'));
     }
 
-    public function show(int $id): View
+    public function show(OrderShowRequest $request): View
     {
-        $order = $this->orderService->showOrder($id);
+        $order = $this->orderService->showOrder($request->get('id'));
 
         return view('orders.order-show', $order);
     }
@@ -46,7 +49,7 @@ class OrderController extends Controller
         return redirect()->route('orders');
     }
 
-    public function preOrder($productId)
+    public function preOrder($productId): View|Factory|Application
     {
         return view('orders.pre-order', ['productId' => $productId]);
     }

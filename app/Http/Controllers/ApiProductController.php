@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductShowRequest;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,9 @@ class ApiProductController extends Controller
         return response()->json($products);
     }
 
-    public function show(int $id): JsonResponse
+    public function show(ProductShowRequest $request): JsonResponse
     {
-        $product = $this->productService->getProductById($id);
+        $product = $this->productService->getProductById($request->get('id'));
 
         if (!$product) {
             return response()->json('Товар не найден', Response::HTTP_NOT_FOUND);

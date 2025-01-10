@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderShowRequest;
 use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
@@ -22,10 +23,10 @@ class ApiOrderController extends Controller
         return response()->json($orders);
     }
 
-    public function show(int $id): JsonResponse
+    public function show(OrderShowRequest $request): JsonResponse
     {
         try {
-            $order = $this->orderService->showOrder($id);
+            $order = $this->orderService->showOrder($request->get('id'));
         } catch (Throwable) {
             return response()->json(['message' => 'Такого заказа не существует'], Response::HTTP_NOT_FOUND);
         }
