@@ -21,7 +21,7 @@ class PreOrderRequest extends FormRequest
         ];
     }
 
-    public function toDto(): PreOrderFormDto
+    public function preOrderFormDto(): PreOrderFormDto
     {
         return new PreOrderFormDto(
             $this->input('email'),

@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    public function toDto(): RegisterFormDto
+    public function registerFormDto(): RegisterFormDto
     {
         return new RegisterFormDto(
             $this->input('name'),

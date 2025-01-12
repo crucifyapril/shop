@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property int $id
+ * @property int $total_amount
+ * @property int $status_id
+ * @property int $user_id
+ * @property string $description
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Order extends Model
 {
     use HasFactory;

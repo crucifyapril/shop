@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CartStoreRequest;
-use App\Models\Product;
 use App\Services\Cart\CartService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CartController extends Controller

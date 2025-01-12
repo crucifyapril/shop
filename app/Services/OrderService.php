@@ -19,6 +19,7 @@ use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpFoundation\Response;
 
 readonly final class OrderService
 {
@@ -64,7 +65,6 @@ readonly final class OrderService
 
         $totalAmount = $this->getSumTotal($products);
 
-        // Применение промокода
         if (!empty($orderDTO->promoCode)) {
             $promoCode = $this->promoCodeRepository->findByCode($orderDTO->promoCode);
 
@@ -72,7 +72,6 @@ readonly final class OrderService
                 throw new Exception('Invalid or expired promoCode');
             }
 
-            // Применяем скидку
             $discount = $promoCode->discount;
             $totalAmount -= $totalAmount * ($discount / 100);
         }
@@ -124,6 +123,10 @@ readonly final class OrderService
     public function showOrder(int $id): array
     {
         $order = $this->orderRepository->findOrderById($id);
+
+        if (!$order) {
+            abort(Response::HTTP_NOT_FOUND, 'Заказ не найден');
+        }
 
         $products = $order->products()->select(['products.id', 'products.name', 'products.price'])->withPivot(
             'quantity'
