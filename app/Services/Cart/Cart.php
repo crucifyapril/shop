@@ -70,9 +70,4 @@ class Cart
     {
         $this->items = json_decode($data, true);
     }
-
-    public function getItem(int $id): array
-    {
-        return $this->items[$id] ?? [];
-    }
 }

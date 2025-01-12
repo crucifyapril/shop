@@ -30,18 +30,17 @@ class CartController extends Controller
      */
     public function store(CartStoreRequest $request): RedirectResponse
     {
-        try {
-            $this->cartService->addItem(
-                (int)$request->get('product_id'),
-                ['quantity' => $request->get('quantity')]
-            );
-        } catch (Exception $exception) {
-            return redirect()
-                ->route('cart.index')
-                ->withErrors(['custom_error' => $exception->getMessage()]);
-        }
+        $this->cartService->addItem(
+            (int)$request->get('product_id'),
+            ['quantity' => $request->get('quantity')]
+        );
 
         return redirect()->route('cart.index');
+    }
+
+    public function update(): JsonResponse
+    {
+        return response()->json(['message' => 'обновить товар в корзине']);
     }
 
     public function destroy(int $id): RedirectResponse

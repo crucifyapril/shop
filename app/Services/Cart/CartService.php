@@ -2,7 +2,6 @@
 
 namespace App\Services\Cart;
 
-use App\Exceptions\ProductOutOfStockException;
 use App\Repositories\ProductRepository;
 use Exception;
 use Illuminate\Redis\Connections\Connection;
@@ -17,15 +16,12 @@ class CartService
 
     public function __construct(
         private readonly Cart $cart,
-        private readonly ProductRepository $productRepository
+        protected readonly ProductRepository $productRepository
     ) {
         $this->connection = Redis::connection('cart');
         $this->get();
     }
 
-    /**
-     * Получение корзины из хранилища
-     */
     public function get(): array
     {
         $data = $this->connection->get($this->getKey());
@@ -50,24 +46,7 @@ class CartService
      */
     public function addItem(int $id, array $data): bool
     {
-        $product = $this->productRepository->findById($id);
-
-        $currentQuantityInCart = $this->cart->getItem($id)['quantity'] ?? 0;
-
-        $quantityToAdd = $data['quantity'] ?? 0;
-
-        $newQuantity = $currentQuantityInCart + $quantityToAdd;
-
-        if ($quantityToAdd < 0) {
-            $this->cart->updateItem($id, ['quantity' => $quantityToAdd]);
-            return $this->save();
-        }
-
-        if ($product->quantity < $newQuantity) {
-            throw new ProductOutOfStockException();
-        }
-
-        $this->cart->addItem($id, ['quantity' => $quantityToAdd]);
+        $this->cart->addItem($id, $data);
 
         return $this->save();
     }

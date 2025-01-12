@@ -35,7 +35,7 @@ class ApiProductController extends Controller
 
     public function random(): JsonResponse
     {
-        $product = $this->productService->getRandomProduct(5);
+        $product = $this->productService->getRandomProduct(15);
 
         return response()->json($product);
     }
