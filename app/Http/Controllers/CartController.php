@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProductOutOfStockException;
 use App\Http\Requests\CartStoreRequest;
 use App\Services\Cart\CartService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -56,5 +56,20 @@ class CartController extends Controller
         $this->cartService->clear();
 
         return redirect()->route('cart.index');
+    }
+
+    public function proceedToOrder(): RedirectResponse
+    {
+        try {
+            if (!$this->cartService->validateCartItems()) {
+                throw new ProductOutOfStockException();
+            }
+        } catch (Exception $exception) {
+            return redirect()
+                ->route('cart.index')
+                ->withErrors(['custom_error' => $exception->getMessage()]);
+        }
+
+        return redirect()->route('order.create');
     }
 }

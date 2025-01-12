@@ -45,6 +45,19 @@ class CartService
         });
     }
 
+    public function validateCartItems(): bool
+    {
+        foreach ($this->cart->getItems() as $id => $item) {
+            $product = $this->productRepository->findById($id);
+
+            if (!$product || $item['quantity'] > $product->quantity) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * @throws Exception
      */
@@ -52,23 +65,35 @@ class CartService
     {
         $product = $this->productRepository->findById($id);
 
-        $currentQuantityInCart = $this->cart->getItem($id)['quantity'] ?? 0;
+        if (!$product) {
+            throw new Exception('Товар не найден');
+        }
 
+        $currentQuantityInCart = $this->cart->getItem($id)['quantity'] ?? 0;
         $quantityToAdd = $data['quantity'] ?? 0;
 
         $newQuantity = $currentQuantityInCart + $quantityToAdd;
 
         if ($quantityToAdd < 0) {
-            $this->cart->updateItem($id, ['quantity' => $quantityToAdd]);
+            if ($newQuantity < 0) {
+                $newQuantity = 0;
+            }
+
+            if ($currentQuantityInCart > $product->quantity) {
+                $newQuantity = $product->quantity;
+            }
+
+            $this->cart->updateItem($id, ['quantity' => $newQuantity - $currentQuantityInCart]);
             return $this->save();
         }
 
-        if ($product->quantity < $newQuantity) {
-            throw new ProductOutOfStockException();
+        if ($newQuantity > $product->quantity) {
+            throw new ProductOutOfStockException(
+                'Недостаточно товара ' . $product->name . ' на складе доступно: ' . $product->quantity
+            );
         }
 
         $this->cart->addItem($id, ['quantity' => $quantityToAdd]);
-
         return $this->save();
     }
 
