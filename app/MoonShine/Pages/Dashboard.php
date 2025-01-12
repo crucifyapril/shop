@@ -11,7 +11,6 @@ use App\Models\User;
 use MoonShine\Decorations\Grid;
 use MoonShine\Metrics\ValueMetric;
 use MoonShine\Pages\Page;
-use MoonShine\Components\MoonShineComponent;
 
 class Dashboard extends Page
 {

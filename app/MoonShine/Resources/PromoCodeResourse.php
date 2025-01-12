@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\PromoCode;
-use App\Models\Status;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Fields\Date;
 use MoonShine\Fields\DateRange;
 use MoonShine\Fields\Number;
-use MoonShine\Fields\Range;
-use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
-use Ramsey\Uuid\Type\Integer;
 
 class PromoCodeResourse extends ModelResource
 {

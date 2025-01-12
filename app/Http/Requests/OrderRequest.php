@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
         ];
     }
 
-    public function toDto(): OrderFormDto
+    public function orderFormDto(): OrderFormDto
     {
         return new OrderFormDto(
             $this->input('name'),

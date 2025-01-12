@@ -4,8 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $price
+ * @property string $description
+ * @property int $quantity
+ * @property bool $is_available
+ */
 class Product extends Model
 {
     use HasFactory;

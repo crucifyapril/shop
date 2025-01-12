@@ -34,7 +34,7 @@ class ApiAuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         try {
-            $this->authService->createUser($request->toDto());
+            $this->authService->createUser($request->registerFormDto());
         } catch (Exception) {
             return response()->json(['success' => false], Response::HTTP_UNAUTHORIZED);
         }

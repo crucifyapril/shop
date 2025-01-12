@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 class FavoriteController extends Controller
 {
     public function __construct(
-        protected readonly FavoriteService $favoriteService
+        private readonly FavoriteService $favoriteService
     ) {
     }
 
