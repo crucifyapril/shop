@@ -15,22 +15,22 @@
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">
                         Статус</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ $status }}</h6>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-white">{{ $status }}</h6>
                 </div>
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">
                         Заказчик</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ auth()->user()->name }}</h6>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-white">{{ auth()->user()->name }}</h6>
                 </div>
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">
                         Почта</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black">{{ auth()->user()->email }}</h6>
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-white">{{ auth()->user()->email }}</h6>
                 </div>
                 <div class="box group">
                     <p class="font-normal text-base leading-7 text-gray-500 mb-3 transition-all duration-500 group-hover:text-gray-700">
                         Комментарий к заказу</p>
-                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-black"> {{ $description ?? 'Нет комментария' }}
+                    <h6 class="font-semibold font-manrope text-2xl leading-9 text-white"> {{ $description ?? 'Нет комментария' }}
                     </h6>
                 </div>
             </div>

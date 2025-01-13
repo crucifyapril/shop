@@ -11,7 +11,6 @@ use App\Models\User;
 use MoonShine\Decorations\Grid;
 use MoonShine\Metrics\ValueMetric;
 use MoonShine\Pages\Page;
-use MoonShine\Components\MoonShineComponent;
 
 class Dashboard extends Page
 {
@@ -45,7 +44,7 @@ class Dashboard extends Page
                     ->columnSpan(4),
                 ValueMetric::make('Промокоды')
                     ->value(PromoCode::query()->count())
-                    ->icon('heroicons.shopping.bag')
+                    ->icon('heroicons.shopping-bag')
                     ->columnSpan(4),
             ])
         ];

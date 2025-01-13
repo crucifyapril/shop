@@ -8,7 +8,6 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use MoonShine\Fields\DateRange;
-use MoonShine\Fields\Email;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Select;
 use MoonShine\Fields\Text;

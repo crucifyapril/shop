@@ -1,11 +1,15 @@
 <?php
 
 use App\Enum\Roles;
-use App\Http\Middleware\Manager;
 use App\Http\Middleware\Owner;
+use App\Http\Middleware\Manager;
+use App\Http\Middleware\ForceJsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,11 +19,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->api(prepend: ForceJsonResponse::class);
+        $middleware->statefulApi();
         $middleware->alias([
             Roles::MANAGER->value => Manager::class,
             Roles::OWNER->value => Owner::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json(['success' => false], Response::HTTP_NOT_FOUND);
+            }
+
+            return null;
+        });
     })->create();

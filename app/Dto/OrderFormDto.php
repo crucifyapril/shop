@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\Dto;
 
-readonly class OrderFormDTO
+readonly class OrderFormDto
 {
     public function __construct(
         public string $name,

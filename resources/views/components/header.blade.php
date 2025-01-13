@@ -53,6 +53,13 @@
                             Мои заказы
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('favorites.index') }}"
+                           class="block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0
+              {{ request()->routeIs('favorites.index') ? 'text-primary-700 bg-primary-700' : 'text-gray-700 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 dark:text-gray-400 dark:hover:text-white' }}">
+                            Избранное
+                        </a>
+                    </li>
                 @endif
                 @if(auth()->check() && auth()->user()->role->name === Roles::MANAGER->value || auth()->check() && auth()->user()->role->name === Roles::OWNER->value)
                     <li>

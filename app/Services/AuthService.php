@@ -1,25 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-use App\DTOs\RegisterFormDTO;
-use App\DTOs\LoginFormDTO;
+use App\Dto\RegisterFormDto;
+use App\Dto\LoginFormDto;
 use App\Enum\Roles;
+use App\Models\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-final class AuthService
+final readonly class AuthService
 {
     public function __construct(
-        protected readonly UserRepository $userRepository,
-        protected readonly RoleRepository $roleRepository
+        private UserRepository $userRepository,
+        private RoleRepository $roleRepository
     ) {
     }
 
-    public function createUser(RegisterFormDTO $dto)
+    public function createUser(RegisterFormDto $dto): User
     {
         $role = $this->roleRepository->findByName(Roles::BUYER);
 
@@ -34,7 +37,7 @@ final class AuthService
     /**
      * @throws ValidationException
      */
-    public function login(LoginFormDTO $dto): true
+    public function login(LoginFormDto $dto): true
     {
         if (!Auth::attempt(['email' => $dto->email, 'password' => $dto->password])) {
             throw ValidationException::withMessages([
@@ -51,5 +54,29 @@ final class AuthService
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+    }
+
+    public function apiLogout(Request $request): bool
+    {
+        auth()->guard('web')->logout();
+
+        return $request->session()->invalidate();
+    }
+
+    public function getUserInfo(): array
+    {
+        /** @var $user User */
+        $user = Auth::user();
+
+        if (is_null($user)) {
+            return [];
+        }
+
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role->name
+        ];
     }
 }

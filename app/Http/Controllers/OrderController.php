@@ -3,24 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderShowRequest;
 use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 
 class OrderController extends Controller
 {
-    public function orders(OrderService $orderService): View
+    public function __construct(
+        private readonly OrderService $orderService
+    ) {
+    }
+
+    public function orders(): View
     {
-        $orders = $orderService->getOrdersPaginated(30);
+        $orders = $this->orderService->getOrdersPaginated(30);
 
         return view('orders.my-orders', compact('orders'));
     }
 
-    public function show(int $id, OrderService $orderService): View
+    public function show(OrderShowRequest $request): View
     {
-        $order = $orderService->showOrder($id);
+        $order = $this->orderService->showOrder($request->get('id'));
 
         return view('orders.order-show', $order);
     }
@@ -30,10 +38,10 @@ class OrderController extends Controller
         return view('orders.order-form');
     }
 
-    public function submit(OrderService $orderService, OrderRequest $request): RedirectResponse
+    public function submit(OrderRequest $request): RedirectResponse
     {
         try {
-            $orderService->createOrder($request->toDTO());
+            $this->orderService->createOrder($request->orderFormDto());
         } catch (Exception $e) {
             return redirect()->route('cart.index')->withErrors($e->getMessage());
         }
@@ -41,15 +49,15 @@ class OrderController extends Controller
         return redirect()->route('orders');
     }
 
-    public function preOrder($productId)
+    public function preOrder($productId): View|Factory|Application
     {
         return view('orders.pre-order', ['productId' => $productId]);
     }
 
-    public function preOrderSubmit(OrderService $orderService, PreOrderRequest $request): RedirectResponse
+    public function preOrderSubmit(PreOrderRequest $request): RedirectResponse
     {
         try {
-            $orderService->preOrderMail($request->toDTO());
+            $this->orderService->preOrderMail($request->preOrderFormDto());
         } catch (Exception $e) {
             return redirect()->route('index')->withErrors($e->getMessage());
         }

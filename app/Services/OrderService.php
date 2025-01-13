@@ -2,15 +2,12 @@
 
 namespace App\Services;
 
-use App\DTOs\PreOrderFormDTO;
+use App\Dto\PreOrderFormDto;
 use App\Enum\Statuses;
-use App\Http\Requests\PreOrderRequest;
-use App\Http\Requests\PromoCodeRequest;
 use App\Mail\ManagerNotification;
 use App\Mail\ManagerPreOrder;
 use App\Mail\OrderShipped;
-use App\DTOs\OrderFormDTO;
-use App\Models\PromoCode;
+use App\Dto\OrderFormDto;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PromoCodeRepository;
@@ -22,24 +19,25 @@ use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpFoundation\Response;
 
-class OrderService
+readonly final class OrderService
 {
     public function __construct(
         private CartService $cartService,
-        protected readonly OrderRepository $orderRepository,
-        protected readonly UserRepository $userRepository,
-        protected readonly StatusRepository $statusRepository,
-        protected readonly RoleRepository $roleRepository,
-        protected readonly ProductRepository $productRepository,
-        protected readonly PromoCodeRepository $promoCodeRepository
+        private OrderRepository $orderRepository,
+        private UserRepository $userRepository,
+        private StatusRepository $statusRepository,
+        private RoleRepository $roleRepository,
+        private ProductRepository $productRepository,
+        private PromoCodeRepository $promoCodeRepository
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function createOrder(OrderFormDTO $orderDTO)
+    public function createOrder(OrderFormDto $orderDTO)
     {
         $user = $this->userRepository->findByEmail($orderDTO->email);
         $status = $this->statusRepository->findByName(Statuses::PENDING);
@@ -67,7 +65,6 @@ class OrderService
 
         $totalAmount = $this->getSumTotal($products);
 
-        // Применение промокода
         if (!empty($orderDTO->promoCode)) {
             $promoCode = $this->promoCodeRepository->findByCode($orderDTO->promoCode);
 
@@ -75,7 +72,6 @@ class OrderService
                 throw new Exception('Invalid or expired promoCode');
             }
 
-            // Применяем скидку
             $discount = $promoCode->discount;
             $totalAmount -= $totalAmount * ($discount / 100);
         }
@@ -128,6 +124,10 @@ class OrderService
     {
         $order = $this->orderRepository->findOrderById($id);
 
+        if (!$order) {
+            abort(Response::HTTP_NOT_FOUND, 'Заказ не найден');
+        }
+
         $products = $order->products()->select(['products.id', 'products.name', 'products.price'])->withPivot(
             'quantity'
         )->get();
@@ -151,7 +151,7 @@ class OrderService
         return $totalAmount;
     }
 
-    public function preOrderMail(PreOrderFormDTO $preOrderDTO): void
+    public function preOrderMail(PreOrderFormDto $preOrderDTO): void
     {
         foreach ($this->roleRepository->getManagerEmails() as $email) {
             Mail::to($email)->send(new ManagerPreOrder($preOrderDTO));

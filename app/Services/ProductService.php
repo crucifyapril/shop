@@ -6,10 +6,11 @@ use App\Repositories\ProductRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ProductService
+readonly class ProductService
 {
-    public function __construct(protected readonly ProductRepository $productRepository)
-    {
+    public function __construct(
+        private ProductRepository $productRepository
+    ) {
     }
 
     public function getProductPaginated(int $count, bool $isAvailable = true): LengthAwarePaginator

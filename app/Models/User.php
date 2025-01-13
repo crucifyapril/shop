@@ -3,9 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use MoonShine\Fields\Relationships\HasMany;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property Role $role
+ */
 class User extends Authenticatable
 {
     protected $fillable = [
@@ -24,8 +32,13 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id', 'roles');
     }
 
-    public function orders(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function orders(): HasOne
     {
         return $this->hasOne(Order::class, 'user_id', 'id');
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'favorites')->withTimestamps();
     }
 }
