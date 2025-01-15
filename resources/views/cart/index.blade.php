@@ -96,7 +96,12 @@
             @method('DELETE')
             <button type="submit">Очистить корзину</button>
         </form>
-        <a href="{{ route('order.create') }}">Оформить заказ</a>
+        <form action="{{ route('cart.proceed-to-order') }}" method="POST">
+            @csrf
+            <button type="submit">
+                Оформить заказ
+            </button>
+        </form>
     @endif
 @endsection
 

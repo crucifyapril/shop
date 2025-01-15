@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ProductOutOfStockException;
 use App\Http\Requests\CartStoreRequest;
-use App\Models\Product;
 use App\Services\Cart\CartService;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -32,17 +30,18 @@ class CartController extends Controller
      */
     public function store(CartStoreRequest $request): RedirectResponse
     {
-        $this->cartService->addItem(
-            (int)$request->get('product_id'),
-            ['quantity' => $request->get('quantity')]
-        );
+        try {
+            $this->cartService->addItem(
+                (int)$request->get('product_id'),
+                ['quantity' => $request->get('quantity')]
+            );
+        } catch (Exception $exception) {
+            return redirect()
+                ->route('cart.index')
+                ->withErrors(['custom_error' => $exception->getMessage()]);
+        }
 
         return redirect()->route('cart.index');
-    }
-
-    public function update(): JsonResponse
-    {
-        return response()->json(['message' => 'обновить товар в корзине']);
     }
 
     public function destroy(int $id): RedirectResponse
@@ -57,5 +56,20 @@ class CartController extends Controller
         $this->cartService->clear();
 
         return redirect()->route('cart.index');
+    }
+
+    public function proceedToOrder(): RedirectResponse
+    {
+        try {
+            if (!$this->cartService->validateCartItems()) {
+                throw new ProductOutOfStockException();
+            }
+        } catch (Exception $exception) {
+            return redirect()
+                ->route('cart.index')
+                ->withErrors(['custom_error' => $exception->getMessage()]);
+        }
+
+        return redirect()->route('order.create');
     }
 }

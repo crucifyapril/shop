@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderShowRequest;
 use App\Http\Requests\PreOrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
@@ -11,17 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiOrderController extends Controller
 {
-    public function orders(OrderService $orderService): JsonResponse
+    public function __construct(
+        private readonly OrderService $orderService
+    ) {
+    }
+    public function orders(): JsonResponse
     {
-        $orders = $orderService->getOrdersPaginated(30);
+        $orders = $this->orderService->getOrdersPaginated(30);
 
         return response()->json($orders);
     }
 
-    public function show(int $id, OrderService $orderService): JsonResponse
+    public function show(OrderShowRequest $request): JsonResponse
     {
         try {
-            $order = $orderService->showOrder($id);
+            $order = $this->orderService->showOrder($request->get('id'));
         } catch (Throwable) {
             return response()->json(['message' => 'Такого заказа не существует'], Response::HTTP_NOT_FOUND);
         }
@@ -29,10 +34,10 @@ class ApiOrderController extends Controller
         return response()->json($order);
     }
 
-    public function submit(OrderService $orderService, OrderRequest $request): JsonResponse
+    public function submit(OrderRequest $request): JsonResponse
     {
         try {
-            $orderService->createOrder($request->toDto());
+            $this->orderService->createOrder($request->orderFormDto());
         } catch (Throwable) {
             return response()->json(['message' => 'Произошла ошибка при создании заказа'], Response::HTTP_BAD_REQUEST);
         }
@@ -40,10 +45,10 @@ class ApiOrderController extends Controller
         return response()->json(['message' => 'Заказ успешно создан']);
     }
 
-    public function preOrderSubmit(OrderService $orderService, PreOrderRequest $request): JsonResponse
+    public function preOrderSubmit(PreOrderRequest $request): JsonResponse
     {
         try {
-            $orderService->preOrderMail($request->toDto());
+            $this->orderService->preOrderMail($request->preOrderFormDto());
         } catch (Throwable) {
             return response()->json(['message' => 'Произошла ошибка при отправке подзаказа'], Response::HTTP_BAD_REQUEST);
         }
