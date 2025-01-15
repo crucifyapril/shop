@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiCartController;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\ApiOrderController;
 use App\Http\Controllers\ApiProductController;
@@ -31,4 +32,12 @@ Route::group(['prefix' => 'orders'], function () {
 Route::group(['prefix' => 'pre-order'], function () {
     Route::post('/submit', [ApiOrderController::class, 'preOrderSubmit']);
     Route::get('/{product_id}', [ApiOrderController::class, 'preOrder']);
+});
+
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/', [ApiCartController::class, 'index']);
+    Route::post('/', [ApiCartController::class, 'store']);
+    Route::put('/{id}', [ApiCartController::class, 'update']);
+    Route::delete('/{id}', [ApiCartController::class, 'destroy']);
+    Route::delete('/', [ApiCartController::class, 'clear']);
 });
