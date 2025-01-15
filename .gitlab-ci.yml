@@ -24,7 +24,7 @@ phpcs:
 test:
   stage: test
   script:
-    - docker run -v $PWD:/app composer:2.8.4 composer install --ignore-platform-reqs
+    - docker run -v $PWD:/var/www registry.gitlab.com/img-docker/composer install
 
     - echo $KEY_PHP_BASE_PASSWORD | docker login -u $KEY_PHP_BASE_USER --password-stdin registry.gitlab.com
     - docker pull $PHP_IMAGE
@@ -35,6 +35,8 @@ build:
   script:
     - echo $KEY_PHP_BASE_PASSWORD | docker login -u $KEY_PHP_BASE_USER --password-stdin registry.gitlab.com
     - docker pull $PHP_IMAGE
+
+    - docker run -v $PWD:/var/www registry.gitlab.com/img-docker/composer install --no-dev
 
     - SHORT_TAG=${CI_COMMIT_SHA:0:8}
     - docker build -t $IMAGE:latest -t $IMAGE:$SHORT_TAG ./.docker/
