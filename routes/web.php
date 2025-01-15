@@ -42,6 +42,7 @@ Route::group(['prefix' => 'cart'], function () {
     Route::put('/{id}', [CartController::class, 'update'])->name('cart.update'); // Обновить товар в корзине
     Route::delete('/{id}', [CartController::class, 'destroy'])->name('cart.destroy'); // Удалить конкретный товар
     Route::delete('/', [CartController::class, 'clear'])->name('cart.clear'); // Очистить всю корзину
+    Route::post('/proceed', [CartController::class, 'proceedToOrder'])->name('cart.proceed-to-order');
 });
 
 Route::group(['prefix' => 'favorites'], function () {
