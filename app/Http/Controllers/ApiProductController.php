@@ -15,6 +15,7 @@ class ApiProductController extends Controller
         private readonly ProductService $productService
     ) {
     }
+
     public function index(): JsonResponse
     {
         $products = $this->productService->getProductPaginated(15);
@@ -24,7 +25,7 @@ class ApiProductController extends Controller
 
     public function show(ProductShowRequest $request): JsonResponse
     {
-        $product = $this->productService->getProductById($request->get('id'));
+        $product = $this->productService->getProductById((int)$request->get('id'));
 
         if (!$product) {
             return response()->json('Товар не найден', Response::HTTP_NOT_FOUND);
